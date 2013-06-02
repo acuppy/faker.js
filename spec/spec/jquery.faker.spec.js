@@ -115,9 +115,24 @@ describe("Faker", function() {
       });
     });
 
-    xdescribe("#paragraph", function() {
-      xit("returns a string of multiple sentences", function() {
-        
+    describe("#paragraph", function() {
+      var spyOnSentences;
+
+      beforeEach(function() {
+        spyOnSentences = spyOn(Faker.Lorem, 'sentences').andCallThrough();
+      });
+
+      it("calls #sentences", function() {
+        Faker.Lorem.paragraph();
+        expect(spyOnSentences).toHaveBeenCalledWith(3, {});
+      });
+
+      it("returns a string of multiple sentences", function() {
+        expect(Faker.Lorem.paragraph()).toMatch(/^(?:(?:\s?\w\s?)+\.){2,}$/);
+      });
+
+      it("returns a string of sentences matching first argument", function() {
+        expect(Faker.Lorem.paragraph(2)).toMatch(/^(?:(?:\s?\w\s?)+\.){2}$/);
       });
     });
   });

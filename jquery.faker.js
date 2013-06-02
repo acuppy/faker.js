@@ -58,6 +58,15 @@
       };
 
       return as_array === true ? sentences : sentences.join(' ') 
+    },
+
+    paragraph: function(sentences, options){
+      var sentences = sentences || 3;
+      var options   = options   || {};
+
+      if( ! $.isNumeric(sentences) ) $.error("First argument must be a valid integer");
+
+      return this.sentences(sentences, options);
     }
   };
 
