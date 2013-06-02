@@ -30,7 +30,7 @@ describe("Faker", function() {
 
     describe("#characters", function() {
       it("returns a string of characters", function() {
-        expect(Faker.Lorem.characters(16)).toMatch(/^[a-zA-Z]{16}$/);
+        expect(Faker.Lorem.characters(16)).toMatch(/^[a-zA-Z0-9]{16}$/);
       });
 
       describe("as array", function() {
@@ -48,37 +48,37 @@ describe("Faker", function() {
 
     describe("#sentence", function() {
       it("returns a string representation", function() {
-        expect(Faker.Lorem.sentence()).toMatch(/^(([a-zA-Z]+)\s?)+\.?$/);
+        expect(Faker.Lorem.sentence()).toMatch(/^(?:(?:[a-zA-Z]+)\s?)+\.?$/);
       });
 
       describe("options", function() {
         describe("length", function() {
           it("iterpretes the first argument as length", function() {
-            expect(Faker.Lorem.sentence(3)).toMatch(/^(([a-zA-Z]+)\s?){3}\.?$/);
+            expect(Faker.Lorem.sentence(3)).toMatch(/^(?:(?:[a-zA-Z]+)\s?){3}\.?$/);
           });
 
           it("finds length from hash options", function() {
             expect(Faker.Lorem.sentence({
               length: 3 
-            })).toMatch(/^(([a-zA-Z]+)\s?){3}\.?$/);
+            })).toMatch(/^(?:(?:[a-zA-Z]+)\s?){3}\.?$/);
           });
         });
 
         describe("startWithCapital", function() {
           it("returns a string that starts capitalized", function() {
-            expect(Faker.Lorem.sentence()).toMatch(/^[^a-z](([a-zA-Z]+)\s?)+\.?$/);
+            expect(Faker.Lorem.sentence()).toMatch(/^[^a-z](?:\w\s?)+\.?$/);
           });
 
           it("returns a string that does NOT start capitalized", function() {
             expect(Faker.Lorem.sentence({
               startWithCapital: false
-            })).toMatch(/^[^A-Z](([a-zA-Z]+)\s?)+\.?$/);
+            })).toMatch(/^[^A-Z](?:\w\s?)+\.?$/);
           });
         });
 
         describe("endWithPeriod", function() {
           it("returns a string that ends with a period", function() {
-            expect(Faker.Lorem.sentence()).toMatch(/^(([a-zA-Z]+)\s?)+\.?$/);
+            expect(Faker.Lorem.sentence()).toMatch(/^(?:\w\s?)+\.?$/);
           });
 
           it("returns a string that does NOT end with a period", function() {
@@ -92,7 +92,7 @@ describe("Faker", function() {
 
     describe("#sentences", function() {
       it("returns a string of multiple sentences", function() {
-        expect(Faker.Lorem.sentences(3)).toMatch(/^(((\s?[a-zA-Z]+)\s?)+\.?){3}$/);
+        expect(Faker.Lorem.sentences(3)).toMatch(/^(?:(?:\s?\w\s?)+\.){3}$/);
       });
 
       describe("as array", function() {
