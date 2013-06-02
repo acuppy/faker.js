@@ -41,18 +41,23 @@
 
     sentences: function(qty){
       if( ! $.isNumeric(qty) ) $.error("Quantity must be a valid integer");
-      debugger
-      var args      = arguments; //Array.prototype.slice.call(arguments).unshift();
+
+      var args      = Array.prototype.slice.call(arguments, 1);
       var options   = {};
+      var as_array  = false;
       var sentences = new Array();
 
-      if( $.isArray(args) && args.length > 0 && $.isObject(args[1]) ) $.extend(options, args[1]);
+      if( args.length > 0 && typeof args[args.length - 1] == 'boolean') 
+        as_array = args[args.length - 1];
+
+      if( $.isArray(args) && args.length > 0 && $.isPlainObject(args[0]) ) 
+        $.extend(options, args[0]);
 
       for (var i = 0; i < qty; i++) {
         sentences.push(this.sentence(options));
       };
 
-      return options['as_array'] === true ? sentences : sentences.join(' ') 
+      return as_array === true ? sentences : sentences.join(' ') 
     }
   };
 

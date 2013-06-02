@@ -92,7 +92,32 @@ describe("Faker", function() {
 
     describe("#sentences", function() {
       it("returns a string of multiple sentences", function() {
-        expect(Faker.Lorem.sentences(3)).toMatch(/^((([a-zA-Z]+)\s?)+\.?)+$/);
+        expect(Faker.Lorem.sentences(3)).toMatch(/^(((\s?[a-zA-Z]+)\s?)+\.?){3}$/);
+      });
+
+      describe("as array", function() {
+        it("returns an array of sentences", function() {
+          expect( $.isArray(Faker.Lorem.sentences(3, true)) ).toBeTruthy();
+        });
+      });
+
+      describe("with options for #sentence passed as the second argument", function() {
+        var spyOnSentence;
+
+        beforeEach(function() {
+          spyOnSentence  = spyOn(Faker.Lorem, 'sentence');
+          Faker.Lorem.sentences(3, { length: 5 });
+        });
+
+        it("should pass the options to #sentence", function() {
+          expect(spyOnSentence).toHaveBeenCalledWith({ length: 5 });
+        });
+      });
+    });
+
+    xdescribe("#paragraph", function() {
+      xit("returns a string of multiple sentences", function() {
+        
       });
     });
   });
