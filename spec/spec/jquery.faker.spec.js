@@ -217,6 +217,18 @@ describe("Faker", function() {
     });
   });
 
+  describe("Faker.Company", function() {
+    it("binds to Faker", function() {
+      expect(Faker.Company).toBeDefined();
+    });
+
+    xdescribe("#name", function() {
+      xit("returns a name", function() {
+        
+      });
+    });
+  });
+
   describe("Faker.Util", function() {
     it("binds to Faker", function() {
       expect(Faker.Util).toBeDefined();
