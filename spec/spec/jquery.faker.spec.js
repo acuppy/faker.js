@@ -66,19 +66,19 @@ describe("Faker", function() {
 
         describe("startWithCapital", function() {
           it("returns a string that starts capitalized", function() {
-            expect(Faker.Lorem.sentence()).toMatch(/^[^a-z](?:\w\s?)+\.?$/);
+            expect(Faker.Lorem.sentence()).toMatch(/^[^a-z](?:[a-zA-Z]+\s?)+\.?$/);
           });
 
           it("returns a string that does NOT start capitalized", function() {
             expect(Faker.Lorem.sentence({
               startWithCapital: false
-            })).toMatch(/^[^A-Z](?:\w\s?)+\.?$/);
+            })).toMatch(/^[^A-Z](?:[a-zA-Z]+\s?)+\.?$/);
           });
         });
 
         describe("endWithPeriod", function() {
           it("returns a string that ends with a period", function() {
-            expect(Faker.Lorem.sentence()).toMatch(/^(?:\w\s?)+\.?$/);
+            expect(Faker.Lorem.sentence()).toMatch(/^(?:[a-zA-Z]+\s?)+\.?$/);
           });
 
           it("returns a string that does NOT end with a period", function() {
@@ -146,6 +146,87 @@ describe("Faker", function() {
       it("calls #paragraph", function() {
         Faker.Lorem.paragraphs(3);
         expect(spyOnParagraph).toHaveBeenCalled();
+      });
+
+      describe("as array", function() {
+        it("returns an array of paragraphs", function() {
+          expect( $.isArray(Faker.Lorem.paragraphs(3, true)) ).toBeTruthy();
+        });
+      });
+    });
+  });
+
+  describe("Faker.Name", function() {
+    it("binds to Faker", function() {
+      expect(Faker.Name).toBeDefined();
+    });
+
+    describe("#name", function() {
+      var parts, name;
+
+      beforeEach(function() {
+        spyOn(Faker.Util.random, 'bool').andReturn(true);
+        parts = Faker.Name.full_name().split(' ');
+        name  = Faker.Locales.en.name;
+      });
+
+      it("returns a fullname", function() {
+        expect( $.inArray(parts[0], name.prefix ) ).toBeTruthy();
+        expect( $.inArray(parts[1], name.first_name ) ).toBeTruthy();
+        expect( $.inArray(parts[2], name.last_name ) ).toBeTruthy();
+        expect( $.inArray(parts[3], name.suffix ) ).toBeTruthy();
+      });
+    });
+
+    describe("#prefix", function() {
+      it("returns a prefix", function() {
+        expect( $.inArray(Faker.Name.prefix(), Faker.Locales.en.name.prefix)).toBeTruthy();
+      });
+    });
+
+    describe("#first_name", function() {
+      it("returns a first name", function() {
+        expect( $.inArray(Faker.Name.first_name(), Faker.Locales.en.name.first_name)).toBeTruthy();
+      });
+    });
+
+    describe("#last_name", function() {
+      it("returns a last name", function() {
+        expect( $.inArray(Faker.Name.last_name(), Faker.Locales.en.name.last_name)).toBeTruthy();
+      });
+    });
+
+    describe("#suffix", function() {
+      it("returns a suffix", function() {
+        expect( $.inArray(Faker.Name.suffix(), Faker.Locales.en.name.suffix)).toBeTruthy();
+      });
+    });
+
+    describe("#title", function() {
+      var parts;
+
+      beforeEach(function() {
+        parts = Faker.Name.title().split(' ');  
+      });
+
+      it("returns a title", function() {
+        expect( $.inArray(parts[0], Faker.Locales.en.name.title.descriptor)).toBeTruthy();
+        expect( $.inArray(parts[1], Faker.Locales.en.name.title.level)).toBeTruthy();
+        expect( $.inArray(parts[2], Faker.Locales.en.name.title.job)).toBeTruthy();
+      });
+    });
+  });
+
+  describe("Faker.Util", function() {
+    it("binds to Faker", function() {
+      expect(Faker.Util).toBeDefined();
+    });
+
+    describe("#random", function() {
+      describe("#bool", function() {
+        it("returns a bool", function() {
+          expect( $.type(Faker.Util.random.bool()) == 'boolean').toBeTruthy();
+        });
       });
     });
   });
