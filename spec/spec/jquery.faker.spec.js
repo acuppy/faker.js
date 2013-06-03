@@ -135,6 +135,19 @@ describe("Faker", function() {
         expect(Faker.Lorem.paragraph(2)).toMatch(/^(?:(?:\s?\w\s?)+\.){2}$/);
       });
     });
+
+    describe("#paragraphs", function() {
+      var spyOnParagraph;
+
+      beforeEach(function() {
+        spyOnParagraph = spyOn(Faker.Lorem, 'paragraph').andCallThrough();
+      });
+
+      it("calls #paragraph", function() {
+        Faker.Lorem.paragraphs(3);
+        expect(spyOnParagraph).toHaveBeenCalled();
+      });
+    });
   });
 });
 

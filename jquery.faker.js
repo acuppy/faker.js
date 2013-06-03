@@ -67,6 +67,27 @@
       if( ! $.isNumeric(sentences) ) $.error("First argument must be a valid integer");
 
       return this.sentences(sentences, options);
+    },
+
+    paragraphs: function(qty){
+      if( ! $.isNumeric(qty) ) $.error("Quantity must be a valid integer");
+
+      var args      = Array.prototype.slice.call(arguments, 1);
+      var options   = {};
+      var as_array  = false;
+      var paragraphs = new Array();
+
+      if( args.length > 0 && typeof args[args.length - 1] == 'boolean') 
+        as_array = args[args.length - 1];
+
+      if( $.isArray(args) && args.length > 0 && $.isPlainObject(args[0]) ) 
+        $.extend(options, args[0]);
+
+      for (var i = 0; i < qty; i++) {
+        paragraphs.push(this.paragraph(3, options));
+      };
+
+      return as_array === true ? paragraphs : paragraphs.join(' ')
     }
   };
 
