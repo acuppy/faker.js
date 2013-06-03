@@ -165,7 +165,7 @@ describe("Faker", function() {
       var parts, name;
 
       beforeEach(function() {
-        spyOn(Faker.Util.random, 'bool').andReturn(true);
+        spyOn(Faker.Util.Random, 'bool').andReturn(true);
         parts = Faker.Name.full_name().split(' ');
         name  = Faker.Locales.en.name;
       });
@@ -224,7 +224,7 @@ describe("Faker", function() {
 
     xdescribe("#name", function() {
       xit("returns a name", function() {
-        
+        return
       });
     });
   });
@@ -234,11 +234,98 @@ describe("Faker", function() {
       expect(Faker.Util).toBeDefined();
     });
 
-    describe("#random", function() {
+    describe("Random", function() {
+      it("binds to Util", function() {
+        expect(Faker.Util.Random).toBeDefined();
+      });
+
       describe("#bool", function() {
         it("returns a bool", function() {
-          expect( $.type(Faker.Util.random.bool()) == 'boolean').toBeTruthy();
+          expect( $.type(Faker.Util.Random.bool()) == 'boolean').toBeTruthy();
         });
+      });
+    });
+
+    describe("#isBlank", function() {
+      it("arrays", function() {
+        expect(Faker.Util.isBlank([])).toBeTruthy();
+        expect(Faker.Util.isBlank(['foo', 'bar'])).toBeFalsy();
+      });
+
+      it("strings", function() {
+        expect(Faker.Util.isBlank('')).toBeTruthy();
+        expect(Faker.Util.isBlank('foo bar')).toBeFalsy();
+      });
+
+      it("objects", function() {
+        expect(Faker.Util.isBlank({})).toBeTruthy();
+        expect(Faker.Util.isBlank({ foo: 'bar' })).toBeFalsy();
+      });
+    });
+
+    describe("#isPresent", function() {
+      it("arrays", function() {
+        expect(Faker.Util.isPresent([])).toBeFalsy();
+        expect(Faker.Util.isPresent(['foo', 'bar'])).toBeTruthy();
+      });
+
+      it("strings", function() {
+        expect(Faker.Util.isPresent('')).toBeFalsy();
+        expect(Faker.Util.isPresent('foo bar')).toBeTruthy();
+      });
+
+      it("objects", function() {
+        expect(Faker.Util.isPresent({})).toBeFalsy();
+        expect(Faker.Util.isPresent({ foo: 'bar' })).toBeTruthy();
+      });
+    });
+  });
+
+  describe("Faker.Locale", function() {
+    it("binds to Faker", function() {
+      expect(Faker.Locale).toBeDefined();
+    });
+
+    describe("#sample", function() {
+      var collection = ["foo", "bar"];
+
+      beforeEach(function() {
+        spyOn(Faker.Locale, 'getByKey').andReturn(collection);
+      });
+
+      it("returns one of two", function() {
+        expect( $.inArray(Faker.Locale.sample('foo.bar'), collection)).toBeTruthy();
+      });
+    });
+
+    describe("#getByKey", function() {
+      
+    });
+
+    describe("#register", function() {
+      var spyOnLocales;
+
+      beforeEach(function() {
+        spyOnLocales = spyOn(Faker.Locales, 'en');
+      });
+
+      it("creates a new object instance with the collection", function() {
+        
+      });
+    });
+
+    xdescribe("#extend", function() {
+      beforeEach(function() {
+        Faker.Locales.en = { foo: "bar", arr: ['stuff', 'things'] }
+        var collection = { blah: 'blah', arr: ['blah'] }
+        Faker.Locale.register('en', collection )
+      });
+
+      xit("extends the existing collection", function() {
+        expect( Faker.Util.isPresent(Faker.Locales.en.arr['stuff']) ).toBeTruthy();
+        expect( Faker.Util.isPresent(Faker.Locales.en.arr['blah']) ).toBeTruthy();
+        expect( Faker.Locales.en.foo == "bar" ).toBeTruthy();
+        expect( Faker.Locales.en.blah == "blah" ).toBeTruthy();
       });
     });
   });
