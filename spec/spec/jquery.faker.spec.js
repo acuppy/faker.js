@@ -307,10 +307,15 @@ describe("Faker", function() {
 
       beforeEach(function() {
         spyOnLocales = spyOn(Faker.Locales, 'en');
+        Faker.Locale.register('es', { name: ["jesus", "juan"] });
       });
 
       it("creates a new object instance with the collection", function() {
-        
+        expect(Faker.Locales.es).toBeDefined();
+      });
+
+      it("binds the collection to the Locale", function() {
+        expect(Faker.Locales.es.name).toEqual(["jesus", "juan"])
       });
     });
 

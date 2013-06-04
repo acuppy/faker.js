@@ -180,7 +180,7 @@
 
     getByKey: function(key){
       var collection = Faker.Locales.en;
-      var arrPath = key.split(".");
+      var arrPath    = key.split(".");
 
       for (var i = 0; i < arrPath.length; i++) {
         collection = collection[arrPath[i]];
@@ -194,8 +194,8 @@
     },
 
     extend: function(){
-      // if( $.type( Faker.Locales[id] ) === "undefined" ) Faker.Locales[id] = {};
-      // $.extend(true, Faker.Locales[id], collection);
+      if( $.type( Faker.Locales[id] ) === "undefined" ) Faker.Locales[id] = {};
+      $.extend(true, Faker.Locales[id], collection);
     }
   };
 
