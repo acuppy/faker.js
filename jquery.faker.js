@@ -135,6 +135,9 @@
   };
 
   Faker.Company = {
+    name: function(){
+      return Faker.Util.interpret(Faker.Locale.sample("company.name")[0]);
+    },
 
   }
 

@@ -234,9 +234,15 @@ describe("Faker", function() {
       expect(Faker.Company).toBeDefined();
     });
 
-    xdescribe("#name", function() {
-      xit("returns a name", function() {
-        return
+    describe("#name", function() {
+      it("returns a string", function() {
+        expect($.type(Faker.Company.name())).toEqual('string');
+      });
+
+      it("returns a name", function() {
+        expect(Faker.Company.name()).toMatch(/^(?:[a-zA-Z,'\-]+\s?)+$/);
+      });
+    });
       });
     });
   });
@@ -289,6 +295,26 @@ describe("Faker", function() {
       it("objects", function() {
         expect(Faker.Util.isPresent({})).toBeFalsy();
         expect(Faker.Util.isPresent({ foo: 'bar' })).toBeTruthy();
+      });
+    });
+
+    describe("#interpret", function() {
+      beforeEach(function() {
+        Faker.Locales.en = {
+          name: {
+            first_name: ["Aaliyah"],
+            last_name:  ["Abbott"]
+          },
+          company: {
+            suffix: ["Inc"]
+          }
+        }
+      });
+
+      it("returns a string with the proper injections", function() {
+        var str = "#{name.first_name} - #{name.last_name} - #{company.suffix}";
+        var exp = "Aaliyah - Abbott - Inc";
+        expect(Faker.Util.interpret(str)).toEqual(exp);
       });
     });
   });
