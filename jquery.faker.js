@@ -2,6 +2,25 @@
 
   window.Faker = {};
 
+  Faker._config = {
+    locale: 'en'
+  };
+
+  Faker.configure = function(configs){
+    if ( ! $.isPlainObject(configs) ) 
+      $.error("Hash expected -- received "+ $.type(configs));
+
+    Faker.config = $.extend(true, {}, Faker._config, configs);
+  }
+
+  Faker.reset = function(){
+    Faker.configure({});
+  }
+
+  Faker.init = function(){
+    Faker.configure({});
+  };
+
   Faker.Lorem  = {
     word: function(){
       return Faker.Locale.sample("lorem.words")[0];
@@ -216,7 +235,7 @@
 
     collection: function(key){
 
-      var collection = Faker.Locales.en;
+      var collection = Faker.Locales[Faker.config.locale];
       var arrPath = key.split(".");
 
       for (var i = 0; i < arrPath.length; i++) {

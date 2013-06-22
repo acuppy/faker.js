@@ -3,6 +3,61 @@ describe("Faker", function() {
   it("binds to the window", function() {
     expect(Faker).toBeDefined();
   });
+
+  describe("Faker.config", function() {
+    describe("defaults", function() {
+      beforeEach(function() {
+        Faker.configure({});  
+      });
+
+      it("should have locale", function() {
+        expect(Faker.config.locale).toEqual('en');
+      });
+    });
+  });
+
+  describe("#configure", function() {
+    beforeEach(function() {
+      Faker._config.foo = 'bar';
+      Faker.configure({
+        locale: 'es'
+      });
+    });
+
+    afterEach(function() {
+      Faker.configure({ locale: 'en'});
+    });
+
+    it("should updated the Faker.config hash", function() {
+      expect(Faker.config.locale).toEqual('es');
+    });
+
+    it("should not effect the 'foo' option", function() {
+      expect(Faker.config.foo).toEqual('bar');
+    });
+  });
+
+  describe("#reset", function() {
+    beforeEach(function() {
+      Faker.configure({ locale: 'es' });
+      Faker.reset();
+    });
+
+    it("should updated the Faker.config hash", function() {
+      expect(Faker.config.locale).toEqual('en');
+    });
+  });
+
+  describe("#init", function() {
+    beforeEach(function() {
+      spyOn(Faker, 'configure').andCallThrough();
+      Faker.init();
+    });
+
+    it("should call Faker.configure()", function() {
+      expect(Faker.configure).toHaveBeenCalled();
+    });
+  });
   
   describe("Faker.Lorem", function() {
     
