@@ -11,6 +11,10 @@ describe("Faker", function() {
     });
 
     describe("#word", function() {
+      it("returns a string", function() {
+        expect($.type(Faker.Lorem.word())).toEqual('string');
+      });
+
       it("returns a single word", function() {
         expect(Faker.Lorem.word()).toMatch(/^[a-zA-Z]+$/);
       });
@@ -47,6 +51,10 @@ describe("Faker", function() {
     });
 
     describe("#sentence", function() {
+      it("returns a string", function() {
+        expect($.type(Faker.Lorem.sentence())).toEqual('string');
+      });
+
       it("returns a string representation", function() {
         expect(Faker.Lorem.sentence()).toMatch(/^(?:(?:[a-zA-Z]+)\s?)+\.?$/);
       });
@@ -125,6 +133,10 @@ describe("Faker", function() {
       it("calls #sentences", function() {
         Faker.Lorem.paragraph();
         expect(spyOnSentences).toHaveBeenCalledWith(3, {});
+      });
+
+      it("returns a string", function() {
+        expect($.type(Faker.Lorem.paragraph())).toEqual('string');
       });
 
       it("returns a string of multiple sentences", function() {
