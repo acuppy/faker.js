@@ -356,7 +356,7 @@ describe("Faker", function() {
       var collection = ["foo", "bar"];
 
       beforeEach(function() {
-        spyOn(Faker.Locale, 'getByKey').andReturn(collection);
+        spyOn(Faker.Locale, 'collection').andReturn(collection);
       });
 
       it("returns one of two", function() {
@@ -364,8 +364,10 @@ describe("Faker", function() {
       });
     });
 
-    describe("#getByKey", function() {
-      
+    describe("#collection", function() {
+      it("returns a collection from a locale based on the key", function() {
+        pending();
+      });
     });
 
     describe("#register", function() {

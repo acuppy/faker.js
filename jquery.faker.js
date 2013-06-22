@@ -143,11 +143,6 @@
       return Faker.Locale.sample("company.suffix")[0];
     },
 
-  Faker.Util = {
-    Random: {
-      bool: function(){
-        return (Math.floor(Math.random()*11) % 2) == 1
-      }
     catch_phrase: function(){
       return $.map(Faker.Locale.collection("company.buzzwords"), function(elm, i){
         return Faker.Util.Random.sample(elm);
@@ -159,6 +154,9 @@
         return Faker.Util.Random.sample(elm);
       }).join(' ');
     }
+  }
+
+  Faker.Util = {
     isBlank: function(object) {
       return (
         ($.isPlainObject(object) && $.isEmptyObject(object)) ||
@@ -170,35 +168,62 @@
 
     isPresent: function(){
      return !this.isBlank.apply(this, arguments);
+    },
+
+    interpret: function(raw){
+      var blocksToInterpret = raw.match(/#{([a-zA-Z\.\-\_]+)}/gi);
+      
+      $.each(blocksToInterpret, function(index, elm){
+        var key = elm.replace(/[#{}\s]/gi, '');
+        // "lorem.name" not "{lorem.name}" or "lorem.name."
+        if( key.match(/^(?:(?:[a-zA-Z\-\_]+)\.?)+[a-zA-Z]+$/) ){
+          raw = raw.replace(elm, Faker.Locale.sample(key));
+        }
+      });
+
+      return raw;
     }
   };
 
-  Faker.Locale = {
-    sample: function(key, size){
+  Faker.Util.Random = {
+    bool: function(){
+      return (Math.floor(Math.random()*11) % 2) == 1
+    },
 
-      var collection = this.getByKey(key);
+    sample: function(collection, size){
       var shuffled = collection.slice(0);
       var i = collection.length;
       var temp;
       var index;
 
       while (i--) {
-          index = Math.floor(i * Math.random());
-          temp = shuffled[index];
-          shuffled[index] = shuffled[i];
-          shuffled[i] = temp;
+        index = Math.floor(i * Math.random());
+        temp = shuffled[index];
+        shuffled[index] = shuffled[i];
+        shuffled[i] = temp;
       }
 
       return shuffled.slice(0, size || 1);
+    }
+  }
+
+  Faker.Locale = {
+
+    sample: function(key, size){
+      var collection = this.collection(key);
+      return Faker.Util.Random.sample(collection, size);
     },
 
-    getByKey: function(key){
+    collection: function(key){
+
       var collection = Faker.Locales.en;
-      var arrPath    = key.split(".");
+      var arrPath = key.split(".");
 
       for (var i = 0; i < arrPath.length; i++) {
         collection = collection[arrPath[i]];
       };
+
+      if( Faker.Util.isBlank(collection) ) $.error('Unknown key: "'+ key.toString() +'" -- you may need to scope it to the proper locale library (ex: name.first_name)');
 
       return collection;
     },
