@@ -4,7 +4,7 @@
 
   Faker.Lorem  = {
     word: function(){
-      return Faker.Locale.sample("lorem.words");
+      return Faker.Locale.sample("lorem.words")[0];
     },
 
     words: function(qty){
