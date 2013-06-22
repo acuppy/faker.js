@@ -110,7 +110,7 @@
     },
 
     prefix: function(){
-      return Faker.Locale.sample('name.prefix')
+      return Faker.Locale.sample('name.prefix');
     },
 
     first_name: function(){
