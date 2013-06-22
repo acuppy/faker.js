@@ -139,7 +139,6 @@
       return Faker.Util.interpret(Faker.Locale.sample("company.name")[0]);
     },
 
-  }
     suffix: function(){
       return Faker.Locale.sample("company.suffix")[0];
     },
@@ -149,8 +148,17 @@
       bool: function(){
         return (Math.floor(Math.random()*11) % 2) == 1
       }
+    catch_phrase: function(){
+      return $.map(Faker.Locale.collection("company.buzzwords"), function(elm, i){
+        return Faker.Util.Random.sample(elm);
+      }).join(' ');
     },
 
+    bs: function(){
+      return $.map(Faker.Locale.collection("company.bs"), function(elm, i){
+        return Faker.Util.Random.sample(elm);
+      }).join(' ');
+    }
     isBlank: function(object) {
       return (
         ($.isPlainObject(object) && $.isEmptyObject(object)) ||

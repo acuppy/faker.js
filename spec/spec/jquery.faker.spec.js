@@ -253,6 +253,24 @@ describe("Faker", function() {
         expect(Faker.Company.suffix()).toMatch(/^(?:[a-zA-Z]+\s?)+$/);
       });
     });
+
+    describe("#catch_phrase", function() {
+      it("returns a string", function() {
+        expect($.type(Faker.Company.catch_phrase())).toEqual('string');
+      });
+
+      it("returns a sentence of values", function() {
+        expect(Faker.Company.catch_phrase()).toMatch(/^(?:[a-zA-Z0-9\-\/,']+\s?)+$/);
+      });
+    });
+
+    describe("#bs", function() {
+      it("returns a string", function() {
+        expect($.type(Faker.Company.bs())).toEqual('string');
+      });
+
+      it("returns a sentence of values", function() {
+        expect(Faker.Company.bs()).toMatch(/^(?:[a-zA-Z0-9\-\/,']+\s?)+$/);
       });
     });
   });
