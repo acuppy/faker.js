@@ -243,6 +243,16 @@ describe("Faker", function() {
         expect(Faker.Company.name()).toMatch(/^(?:[a-zA-Z,'\-]+\s?)+$/);
       });
     });
+
+    describe("#suffix", function() {
+      it("returns a string", function() {
+        expect($.type(Faker.Company.suffix())).toEqual('string');
+      });
+
+      it("returns a suffix", function() {
+        expect(Faker.Company.suffix()).toMatch(/^(?:[a-zA-Z]+\s?)+$/);
+      });
+    });
       });
     });
   });

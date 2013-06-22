@@ -140,6 +140,9 @@
     },
 
   }
+    suffix: function(){
+      return Faker.Locale.sample("company.suffix")[0];
+    },
 
   Faker.Util = {
     Random: {
