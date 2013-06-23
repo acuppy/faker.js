@@ -13,11 +13,7 @@
     Faker.config = $.extend(true, {}, Faker._config, configs);
   }
 
-  Faker.reset = function(){
-    Faker.configure({});
-  }
-
-  Faker.init = function(){
+  Faker.init = Faker.reset = function(){
     Faker.configure({});
   };
 
@@ -252,7 +248,7 @@
     },
 
     extend: function(){
-      if( $.type( Faker.Locales[id] ) === "undefined" ) Faker.Locales[id] = {};
+      if( ! Faker.Locales[id] ) Faker.Locales[id] = {};
       $.extend(true, Faker.Locales[id], collection);
     }
   };
