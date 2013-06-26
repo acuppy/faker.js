@@ -503,10 +503,15 @@ describe("Faker", function() {
           Faker.SubTestExtensionOfTestExtension = Faker.TestExtension.extend({ foo3: 'bar3' });
         });
 
-        it("should not inherit the configs from Faker", function() {
-          expect(Faker.TestExtension.foo2).toEqual('bar2');
+        it("should inherit from its parent", function() {
           expect(Faker.SubTestExtensionOfTestExtension.foo2).toEqual(Faker.TestExtension.foo2);
+        });
+
+        it("should not pass it's properties up the chain", function() {
           expect(Faker.TestExtension.foo3).not.toBeDefined();
+        });
+
+        it("should have it's own properties", function() {
           expect(Faker.SubTestExtensionOfTestExtension.foo3).toEqual('bar3');
         });
       });
