@@ -18,22 +18,15 @@ describe("Faker", function() {
 
   describe("#configure", function() {
     beforeEach(function() {
-      Faker._config.foo = 'bar';
-      Faker.configure({
-        locale: 'es'
-      });
+      Faker.configure({ locale: 'es' });
     });
 
     afterEach(function() {
-      Faker.configure({ locale: 'en'});
+      Faker.configure({});
     });
 
     it("should updated the Faker.config hash", function() {
       expect(Faker.config.locale).toEqual('es');
-    });
-
-    it("should not effect the 'foo' option", function() {
-      expect(Faker.config.foo).toEqual('bar');
     });
   });
 
@@ -454,6 +447,68 @@ describe("Faker", function() {
         expect( Faker.Util.isPresent(Faker.Locales.en.arr['blah']) ).toBeTruthy();
         expect( Faker.Locales.en.foo == "bar" ).toBeTruthy();
         expect( Faker.Locales.en.blah == "blah" ).toBeTruthy();
+      });
+    });
+  });
+
+  describe("Extensions", function() {
+    describe("#extend", function() {
+      beforeEach(function() {
+        spyOn($, 'extend').andCallThrough();
+
+        Faker.TestExtension = Faker.extend({
+          custom_method: function(){ }
+        });
+      });
+
+      it("should have the newly added extension methods", function() {
+        expect(Faker.TestExtension.custom_method).toBeDefined();
+      });
+
+      it("should extend Faker.Extension.Base", function() {
+        expect($.extend).toHaveBeenCalled();
+      });
+
+      describe("configs", function() {
+        beforeEach(function() {
+          Faker.configure({
+            foo: 'bar'
+          });
+
+          Faker.TestExtension.configure({
+            foo3: 'bar3'
+          });
+        });
+
+        it("should not inherit the configs from Faker", function() {
+          expect(Faker.config.foo).toBeDefined();
+        });
+
+        it("should not have extended the parent extension", function(){
+          expect(Faker.config.foo2).not.toBeDefined()
+        });
+
+        it("should not inherit the configs from Faker", function(){
+          expect(Faker.TestExtension.config.foo).not.toBeDefined();
+        });
+
+        it("should have the configs from its configure method", function() {
+          expect(Faker.TestExtension.config.foo3).toBeDefined();
+        });
+      });
+
+      describe("extending an extension", function() {
+        beforeEach(function() {
+          Faker.TestExtension  = Faker.extend({ foo2: 'bar2' });
+          Faker.SubTestExtensionOfTestExtension = Faker.TestExtension.extend({ foo3: 'bar3' });
+        });
+
+        it("should not inherit the configs from Faker", function() {
+          expect(Faker.TestExtension.foo2).toEqual('bar2');
+          expect(Faker.SubTestExtensionOfTestExtension.foo2).toEqual(Faker.TestExtension.foo2);
+          expect(Faker.TestExtension.foo3).not.toBeDefined();
+          expect(Faker.SubTestExtensionOfTestExtension.foo3).toEqual('bar3');
+        });
       });
     });
   });

@@ -1,23 +1,35 @@
 (function($, window){
 
-  window.Faker = {};
+  window.Faker = {}
 
-  Faker._config = {
-    locale: 'en'
-  };
+  Faker.Base = {
+    config: {},
 
-  Faker.configure = function(configs){
-    if ( ! $.isPlainObject(configs) ) 
-      $.error("Hash expected -- received "+ $.type(configs));
+    reset: function(){
+      this.configure({});
+    },
 
-    Faker.config = $.extend(true, {}, Faker._config, configs);
+    configure: function(configs){
+      if ( ! $.isPlainObject(configs) ) $.error("Hash expected -- received "+ $.type(configs));
+
+      var baseConfig = {
+        locale: 'en'
+      }
+
+      this.config = $.extend(true, {}, baseConfig, configs);
+    },
+
+    extend: function(extension){
+      return $.extend(true, {}, this, extension || {});
+    }
   }
 
-  Faker.init = Faker.reset = function(){
-    Faker.configure({});
-  };
+  // rebase the Faker object on the Base object
+  Faker = $.extend(true, {}, Faker.Base);
+  // alias the init method to reset for now
+  Faker.init = Faker.reset;
 
-  Faker.Lorem  = {
+  Faker.Lorem = Faker.extend({
     word: function(){
       return Faker.Locale.sample("lorem.words")[0];
     },
@@ -104,9 +116,9 @@
 
       return as_array === true ? paragraphs : paragraphs.join(' ');
     }
-  };
+  });
 
-  Faker.Name = {
+  Faker.Name = Faker.extend({
     full_name: function(){
       var name = new Array();
       
@@ -147,9 +159,9 @@
       title.push(Faker.Locale.sample('name.title.job'));
       return title.join(' ');
     }   
-  };
+  });
 
-  Faker.Company = {
+  Faker.Company = Faker.extend({
     name: function(){
       return Faker.Util.interpret(Faker.Locale.sample("company.name")[0]);
     },
@@ -169,7 +181,7 @@
         return Faker.Util.Random.sample(elm);
       }).join(' ');
     }
-  }
+  });
 
   Faker.Util = {
     isBlank: function(object) {
@@ -255,6 +267,12 @@
 
   Faker.Locales = {};
 
-  $.fn.faker = function(){};
+  Faker.init();
+
+  $.fn.faker = function(){
+    return this.each(function(){
+      
+    });
+  };
 
 })(jQuery, window);
