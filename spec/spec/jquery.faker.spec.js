@@ -457,7 +457,7 @@ describe("Faker", function() {
         spyOn($, 'extend').andCallThrough();
 
         Faker.TestExtension = Faker.extend({
-          custom_method: function(){ }
+          custom_method: $.noop
         });
       });
 
@@ -507,11 +507,11 @@ describe("Faker", function() {
           expect(Faker.SubTestExtensionOfTestExtension.foo2).toEqual(Faker.TestExtension.foo2);
         });
 
-        it("should not pass it's properties up the chain", function() {
+        it("should not pass its properties up the chain", function() {
           expect(Faker.TestExtension.foo3).not.toBeDefined();
         });
 
-        it("should have it's own properties", function() {
+        it("should have its own properties", function() {
           expect(Faker.SubTestExtensionOfTestExtension.foo3).toEqual('bar3');
         });
       });
