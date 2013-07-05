@@ -190,6 +190,13 @@
         }
       });
       return raw;
+    },
+    fix_umlauts: function(string) {
+      string = string.replace("ä", 'ae');
+      string = string.replace("ö", 'oe');
+      string = string.replace("ü", 'ue');
+      string = string.replace("ß", 'ss');
+      return string;
     }
   };
 

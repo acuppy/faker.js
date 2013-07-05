@@ -159,6 +159,13 @@
       )
       raw
 
+    fix_umlauts: (string) ->
+      string = string.replace("ä", 'ae')
+      string = string.replace("ö", 'oe')
+      string = string.replace("ü", 'ue')
+      string = string.replace("ß", 'ss')
+      string
+
   Faker.Util.Random = 
     bool: ->
       (Math.floor(Math.random()*11) % 2) == 1
