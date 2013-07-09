@@ -143,6 +143,9 @@
     email: ->
       [ @user_name(), @domain_name() ].join('@')
 
+    free_email: ->
+      [ @user_name(), Faker.Locale.sample('internet.free_email') ].join('@')
+
     user_name: ->
       'blah'
 

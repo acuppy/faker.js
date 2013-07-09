@@ -254,6 +254,10 @@ describe "Faker", ->
       it "expects to have used Faker.Internet.domain_name", ->
         Faker.Internet.email()
         expect(Faker.Internet.domain_name).toHaveBeenCalled();
+
+    describe "#free_email", ->
+      it "returns an email address for a popular free email provider", ->
+        expect(Faker.Internet.free_email()).toMatch(/[a-zA-Z0-9]+\@(?:gmail|yahoo|hotmail)\.com/)
      
   describe "Faker.Util", ->
     it "binds to Faker", ->

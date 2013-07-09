@@ -176,6 +176,9 @@
     email: function() {
       return [this.user_name(), this.domain_name()].join('@');
     },
+    free_email: function() {
+      return [this.user_name(), Faker.Locale.sample('internet.free_email')].join('@');
+    },
     user_name: function() {
       return 'blah';
     },

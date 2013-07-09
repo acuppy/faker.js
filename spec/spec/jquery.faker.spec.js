@@ -280,7 +280,7 @@
       it("binds to Faker", function() {
         return expect(Faker.Internet).toBeDefined();
       });
-      return describe("#email", function() {
+      describe("#email", function() {
         beforeEach(function() {
           spyOn(Faker.Internet, 'user_name').andCallThrough();
           return spyOn(Faker.Internet, 'domain_name').andCallThrough();
@@ -295,6 +295,11 @@
         return it("expects to have used Faker.Internet.domain_name", function() {
           Faker.Internet.email();
           return expect(Faker.Internet.domain_name).toHaveBeenCalled();
+        });
+      });
+      return describe("#free_email", function() {
+        return it("returns an email address for a popular free email provider", function() {
+          return expect(Faker.Internet.free_email()).toMatch(/[a-zA-Z0-9]+\@(?:gmail|yahoo|hotmail)\.com/);
         });
       });
     });
