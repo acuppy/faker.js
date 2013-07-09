@@ -4,6 +4,12 @@
     it("binds to the window", function() {
       return expect(Faker).toBeDefined();
     });
+    beforeEach(function() {
+      return spyOn(console, 'log').andCallThrough();
+    });
+    afterEach(function() {
+      return expect(console.log).not.toHaveBeenCalled();
+    });
     describe("Faker.config", function() {
       return describe("defaults", function() {
         beforeEach(function() {

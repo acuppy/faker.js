@@ -2,6 +2,12 @@ describe "Faker", ->
   it "binds to the window", ->
     expect(Faker).toBeDefined()
 
+  beforeEach ->
+    spyOn(console, 'log').andCallThrough()
+
+  afterEach ->
+    expect(console.log).not.toHaveBeenCalled()
+
   describe "Faker.config", ->
     describe "defaults", ->
       beforeEach  ->
