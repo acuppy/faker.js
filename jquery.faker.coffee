@@ -146,6 +146,9 @@
     free_email: ->
       [ @user_name(), Faker.Locale.sample('internet.free_email') ].join('@')
 
+    safe_email: ->
+      [ @user_name(), "example.#{Faker.Util.Random.sample(['com', 'net', 'org'])}" ].join('@')
+
     user_name: ->
       'blah'
 

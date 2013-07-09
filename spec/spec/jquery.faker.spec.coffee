@@ -256,8 +256,26 @@ describe "Faker", ->
         expect(Faker.Internet.domain_name).toHaveBeenCalled();
 
     describe "#free_email", ->
+      beforeEach ->
+        spyOn(Faker.Internet, 'user_name').andCallThrough()
+
       it "returns an email address for a popular free email provider", ->
         expect(Faker.Internet.free_email()).toMatch(/[a-zA-Z0-9]+\@(?:gmail|yahoo|hotmail)\.com/)
+
+      it "expects to have used Faker.Internet.user_name", ->
+        Faker.Internet.free_email()
+        expect(Faker.Internet.user_name).toHaveBeenCalled();
+
+    describe "#safe_email", ->
+      beforeEach ->
+        spyOn(Faker.Internet, 'user_name').andCallThrough()
+
+      it "returns an email address using example as the domain", ->
+        expect(Faker.Internet.safe_email()).toMatch(/[a-zA-Z0-9]+\@example\.(?:com|net|org)/)
+
+      it "expects to have used Faker.Internet.user_name", ->
+        Faker.Internet.safe_email()
+        expect(Faker.Internet.user_name).toHaveBeenCalled();
      
   describe "Faker.Util", ->
     it "binds to Faker", ->

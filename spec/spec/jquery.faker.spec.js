@@ -297,9 +297,28 @@
           return expect(Faker.Internet.domain_name).toHaveBeenCalled();
         });
       });
-      return describe("#free_email", function() {
-        return it("returns an email address for a popular free email provider", function() {
+      describe("#free_email", function() {
+        beforeEach(function() {
+          return spyOn(Faker.Internet, 'user_name').andCallThrough();
+        });
+        it("returns an email address for a popular free email provider", function() {
           return expect(Faker.Internet.free_email()).toMatch(/[a-zA-Z0-9]+\@(?:gmail|yahoo|hotmail)\.com/);
+        });
+        return it("expects to have used Faker.Internet.user_name", function() {
+          Faker.Internet.free_email();
+          return expect(Faker.Internet.user_name).toHaveBeenCalled();
+        });
+      });
+      return describe("#safe_email", function() {
+        beforeEach(function() {
+          return spyOn(Faker.Internet, 'user_name').andCallThrough();
+        });
+        it("returns an email address using example as the domain", function() {
+          return expect(Faker.Internet.safe_email()).toMatch(/[a-zA-Z0-9]+\@example\.(?:com|net|org)/);
+        });
+        return it("expects to have used Faker.Internet.user_name", function() {
+          Faker.Internet.safe_email();
+          return expect(Faker.Internet.user_name).toHaveBeenCalled();
         });
       });
     });
