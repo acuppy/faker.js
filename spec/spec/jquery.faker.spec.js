@@ -327,19 +327,14 @@
           return expect(Faker.Internet.user_name).toHaveBeenCalled();
         });
       });
-      return describe("#user_name", function() {
+      describe("#user_name", function() {
         beforeEach(function() {
           spyOn(Faker.Name, 'first_name').andCallThrough();
-          spyOn(Faker.Name, 'last_name').andCallThrough();
           return spyOn(Faker.Util, 'fix_umlauts').andCallThrough();
         });
         it("expects to have used Faker.Name.first_name", function() {
           Faker.Internet.user_name();
           return expect(Faker.Name.first_name).toHaveBeenCalled();
-        });
-        it("expects to have used Faker.Name.last_name", function() {
-          Faker.Internet.user_name();
-          return expect(Faker.Name.last_name).toHaveBeenCalled();
         });
         it("expects to have fixed umlauts", function() {
           Faker.Internet.user_name();
@@ -347,6 +342,35 @@
         });
         return it("returns a string without whitespace characters", function() {
           return expect(Faker.Internet.user_name()).not.toMatch(/\W/gi);
+        });
+      });
+      describe("#domain_name", function() {
+        beforeEach(function() {
+          spyOn(Faker.Internet, 'domain_word').andCallThrough();
+          return spyOn(Faker.Util, 'fix_umlauts').andCallThrough();
+        });
+        it("returns a string with a TLD", function() {
+          return expect(Faker.Internet.domain_name()).toMatch(/[a-z]+\.[a-z]{2,}/);
+        });
+        it("expects to have fixed umlauts", function() {
+          Faker.Internet.domain_name();
+          return expect(Faker.Util.fix_umlauts).toHaveBeenCalled();
+        });
+        return it("expects to have domain_word called", function() {
+          Faker.Internet.domain_name();
+          return expect(Faker.Internet.domain_word).toHaveBeenCalled();
+        });
+      });
+      return describe("#domain_word", function() {
+        beforeEach(function() {
+          return spyOn(Faker.Company, 'name').andCallThrough();
+        });
+        it("returns a string", function() {
+          return expect(Faker.Internet.domain_word()).not.toMatch(/\W/);
+        });
+        return it("expects to have called Faker.Company.name", function() {
+          Faker.Company.name();
+          return expect(Faker.Company.name).toHaveBeenCalled();
         });
       });
     });

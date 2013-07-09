@@ -159,7 +159,13 @@
       Faker.Util.fix_umlauts( Faker.Util.Random.sample(samples).call() )
 
     domain_name: ->
-      'example.com'
+      [ Faker.Util.fix_umlauts( @domain_word() ), @domain_suffix() ].join('.')
+
+    domain_word: ->
+      Faker.Company.name().split(' ')[0].replace(/\W/, '').toLowerCase()
+
+    domain_suffix: ->
+      Faker.Locale.sample('internet.domain_suffix')
 
   Faker.Util = 
     isBlank: (object) ->
@@ -169,7 +175,7 @@
       (!object)
 
     isPresent: ->
-     !this.isBlank.apply(this, arguments)
+     !@isBlank.apply(@, arguments)
 
     interpret: (raw) ->
       blocksToInterpret = raw.match(/#{([a-zA-Z\.\-\_]+)}/gi);

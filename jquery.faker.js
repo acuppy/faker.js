@@ -196,7 +196,13 @@
       return Faker.Util.fix_umlauts(Faker.Util.Random.sample(samples).call());
     },
     domain_name: function() {
-      return 'example.com';
+      return [Faker.Util.fix_umlauts(this.domain_word()), this.domain_suffix()].join('.');
+    },
+    domain_word: function() {
+      return Faker.Company.name().split(' ')[0].replace(/\W/, '').toLowerCase();
+    },
+    domain_suffix: function() {
+      return Faker.Locale.sample('internet.domain_suffix');
     }
   });
 

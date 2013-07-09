@@ -286,16 +286,11 @@ describe "Faker", ->
     describe "#user_name", ->
       beforeEach ->
         spyOn(Faker.Name, 'first_name').andCallThrough()
-        spyOn(Faker.Name, 'last_name').andCallThrough()
         spyOn(Faker.Util, 'fix_umlauts').andCallThrough()
 
       it "expects to have used Faker.Name.first_name", ->
         Faker.Internet.user_name()
         expect(Faker.Name.first_name).toHaveBeenCalled()
-
-      it "expects to have used Faker.Name.last_name", ->
-        Faker.Internet.user_name()
-        expect(Faker.Name.last_name).toHaveBeenCalled()
 
       it "expects to have fixed umlauts", ->
         Faker.Internet.user_name()
@@ -303,6 +298,37 @@ describe "Faker", ->
 
       it "returns a string without whitespace characters", ->
         expect(Faker.Internet.user_name()).not.toMatch(/\W/gi)
+
+    describe "#domain_name", ->
+      beforeEach ->
+        spyOn(Faker.Internet, 'domain_word').andCallThrough()
+        spyOn(Faker.Util, 'fix_umlauts').andCallThrough()
+
+      it "returns a string with a TLD", ->
+        expect(Faker.Internet.domain_name()).toMatch(/[a-z]+\.[a-z]{2,}/)
+
+      it "expects to have fixed umlauts", ->
+        Faker.Internet.domain_name()
+        expect(Faker.Util.fix_umlauts).toHaveBeenCalled()
+
+      it "expects to have domain_word called", ->
+        Faker.Internet.domain_name()
+        expect(Faker.Internet.domain_word).toHaveBeenCalled()
+
+    describe "#domain_word", ->
+      beforeEach ->
+        spyOn(Faker.Company, 'name').andCallThrough()
+
+      it "returns a string", ->
+        expect(Faker.Internet.domain_word()).not.toMatch(/\W/)
+
+      it "expects to have called Faker.Company.name", ->
+        Faker.Company.name()
+        expect(Faker.Company.name).toHaveBeenCalled()
+
+    describe "#domain_suffix", ->
+      it "returns a TLD", ->
+        expect( $.inArray(Faker.Internet.domain_suffix(), ["com", "biz", "info", "name", "net", "org"]).toBeTruthy()
      
   describe "Faker.Util", ->
     it "binds to Faker", ->
