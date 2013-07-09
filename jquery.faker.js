@@ -172,6 +172,18 @@
     }
   });
 
+  Faker.Internet = Faker.extend({
+    email: function() {
+      return [this.user_name(), this.domain_name()].join('@');
+    },
+    user_name: function() {
+      return 'blah';
+    },
+    domain_name: function() {
+      return 'example.com';
+    }
+  });
+
   Faker.Util = {
     isBlank: function(object) {
       return ($.isPlainObject(object) && $.isEmptyObject(object)) || ($.isArray(object) && object.length === 0) || ($.type(object) === "string" && $.trim(object) === "") || (!object);

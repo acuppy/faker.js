@@ -234,6 +234,26 @@ describe "Faker", ->
     
       it "returns a sentence of values", ->
         expect(Faker.Company.bs()).toMatch(/^(?:[a-zA-Z0-9\-\/,']+\s?)+$/)
+
+  describe "Faker.Internet", ->
+    it "binds to Faker", ->
+      expect(Faker.Internet).toBeDefined();
+
+    describe "#email", ->
+      beforeEach ->
+        spyOn(Faker.Internet, 'user_name').andCallThrough()
+        spyOn(Faker.Internet, 'domain_name').andCallThrough()
+
+      it "returns an email address from a username and domain", ->
+        expect(Faker.Internet.email()).toMatch(/[a-zA-Z0-9]+\@[a-zA-Z]+\.[a-z]{2,}/)
+
+      it "expects to have used Faker.Internet.user_name", ->
+        Faker.Internet.email()
+        expect(Faker.Internet.user_name).toHaveBeenCalled();
+
+      it "expects to have used Faker.Internet.domain_name", ->
+        Faker.Internet.email()
+        expect(Faker.Internet.domain_name).toHaveBeenCalled();
      
   describe "Faker.Util", ->
     it "binds to Faker", ->

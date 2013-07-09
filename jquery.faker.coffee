@@ -139,6 +139,16 @@
         Faker.Util.Random.sample(elm)
       ).join(' ')
 
+  Faker.Internet = Faker.extend
+    email: ->
+      [ @user_name(), @domain_name() ].join('@')
+
+    user_name: ->
+      'blah'
+
+    domain_name: ->
+      'example.com'
+
   Faker.Util = 
     isBlank: (object) ->
       ($.isPlainObject(object) and $.isEmptyObject(object)) or

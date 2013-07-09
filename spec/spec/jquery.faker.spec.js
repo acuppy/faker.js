@@ -276,6 +276,28 @@
         });
       });
     });
+    describe("Faker.Internet", function() {
+      it("binds to Faker", function() {
+        return expect(Faker.Internet).toBeDefined();
+      });
+      return describe("#email", function() {
+        beforeEach(function() {
+          spyOn(Faker.Internet, 'user_name').andCallThrough();
+          return spyOn(Faker.Internet, 'domain_name').andCallThrough();
+        });
+        it("returns an email address from a username and domain", function() {
+          return expect(Faker.Internet.email()).toMatch(/[a-zA-Z0-9]+\@[a-zA-Z]+\.[a-z]{2,}/);
+        });
+        it("expects to have used Faker.Internet.user_name", function() {
+          Faker.Internet.email();
+          return expect(Faker.Internet.user_name).toHaveBeenCalled();
+        });
+        return it("expects to have used Faker.Internet.domain_name", function() {
+          Faker.Internet.email();
+          return expect(Faker.Internet.domain_name).toHaveBeenCalled();
+        });
+      });
+    });
     describe("Faker.Util", function() {
       it("binds to Faker", function() {
         return expect(Faker.Util).toBeDefined();
