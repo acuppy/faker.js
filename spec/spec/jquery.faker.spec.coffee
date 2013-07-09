@@ -361,6 +361,14 @@ describe "Faker", ->
      
       it "returns one of two", ->
         expect( $.inArray(Faker.Locale.sample('foo.bar'), collection)).toBeTruthy()
+
+      describe "when selecting one sample", ->
+        it "does NOT return an array", ->
+          expect( $.type(Faker.Locale.sample('foo.bar')) == 'string' ).toBeTruthy()
+
+      describe "when selecting more than one sample", ->
+        it "returns an array", ->
+          expect( $.isArray(Faker.Locale.sample('foo.bar', 2)) ).toBeTruthy()
      
     describe "#collection", ->
       it "returns a collection from a locale based on the key", ->

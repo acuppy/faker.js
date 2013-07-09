@@ -31,7 +31,7 @@
 
   Faker.Lorem = Faker.extend({
     word: function() {
-      return Faker.Locale.sample("lorem.words")[0];
+      return Faker.Locale.sample("lorem.words");
     },
     words: function(qty) {
       if (!$.isNumeric(qty)) $.error("Quantity must be a valid integer");
@@ -155,10 +155,10 @@
 
   Faker.Company = Faker.extend({
     name: function() {
-      return Faker.Util.interpret(Faker.Locale.sample("company.name")[0]);
+      return Faker.Util.interpret(Faker.Locale.sample("company.name"));
     },
     suffix: function() {
-      return Faker.Locale.sample("company.suffix")[0];
+      return Faker.Locale.sample("company.suffix");
     },
     catch_phrase: function() {
       return $.map(Faker.Locale.collection("company.buzzwords"), function(elm, i) {
@@ -226,13 +226,18 @@
       var i, index, shuffled, temp;
       shuffled = collection.slice(0);
       i = collection.length;
+      if (size == null) size = 1;
       while (i--) {
         index = Math.floor(i * Math.random());
         temp = shuffled[index];
         shuffled[index] = shuffled[i];
         shuffled[i] = temp;
       }
-      return shuffled.slice(0, size || 1);
+      if (size > 1) {
+        return shuffled.slice(0, size);
+      } else {
+        return shuffled.slice(0, 1)[0];
+      }
     }
   };
 

@@ -27,7 +27,7 @@
 
   Faker.Lorem = Faker.extend
     word: ->
-      Faker.Locale.sample("lorem.words")[0]
+      Faker.Locale.sample("lorem.words")
 
     words: (qty) ->
       $.error "Quantity must be a valid integer" unless $.isNumeric qty
@@ -124,10 +124,10 @@
 
   Faker.Company = Faker.extend
     name: ->
-      Faker.Util.interpret Faker.Locale.sample("company.name")[0]
+      Faker.Util.interpret Faker.Locale.sample("company.name")
 
     suffix: ->
-      Faker.Locale.sample("company.suffix")[0]
+      Faker.Locale.sample("company.suffix")
 
     catch_phrase: ->
       $.map(Faker.Locale.collection("company.buzzwords"), (elm, i) ->
@@ -189,6 +189,7 @@
     sample: (collection, size) ->
       shuffled = collection.slice(0)
       i = collection.length
+      size ?= 1
 
       while i--
         index = Math.floor(i * Math.random())
@@ -196,7 +197,7 @@
         shuffled[index] = shuffled[i]
         shuffled[i] = temp
 
-      shuffled.slice(0, size or 1)
+      if size > 1 then shuffled.slice(0, size) else shuffled.slice(0,1)[0]
 
   Faker.Locale = 
     sample: (key, size) ->

@@ -419,8 +419,18 @@
         beforeEach(function() {
           return spyOn(Faker.Locale, 'collection').andReturn(collection);
         });
-        return it("returns one of two", function() {
+        it("returns one of two", function() {
           return expect($.inArray(Faker.Locale.sample('foo.bar'), collection)).toBeTruthy();
+        });
+        describe("when selecting one sample", function() {
+          return it("does NOT return an array", function() {
+            return expect($.type(Faker.Locale.sample('foo.bar')) === 'string').toBeTruthy();
+          });
+        });
+        return describe("when selecting more than one sample", function() {
+          return it("returns an array", function() {
+            return expect($.isArray(Faker.Locale.sample('foo.bar', 2))).toBeTruthy();
+          });
         });
       });
       describe("#collection", function() {
