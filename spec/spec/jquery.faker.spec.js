@@ -315,7 +315,7 @@
           return expect(Faker.Internet.user_name).toHaveBeenCalled();
         });
       });
-      return describe("#safe_email", function() {
+      describe("#safe_email", function() {
         beforeEach(function() {
           return spyOn(Faker.Internet, 'user_name').andCallThrough();
         });
@@ -325,6 +325,28 @@
         return it("expects to have used Faker.Internet.user_name", function() {
           Faker.Internet.safe_email();
           return expect(Faker.Internet.user_name).toHaveBeenCalled();
+        });
+      });
+      return describe("#user_name", function() {
+        beforeEach(function() {
+          spyOn(Faker.Name, 'first_name').andCallThrough();
+          spyOn(Faker.Name, 'last_name').andCallThrough();
+          return spyOn(Faker.Util, 'fix_umlauts').andCallThrough();
+        });
+        it("expects to have used Faker.Name.first_name", function() {
+          Faker.Internet.user_name();
+          return expect(Faker.Name.first_name).toHaveBeenCalled();
+        });
+        it("expects to have used Faker.Name.last_name", function() {
+          Faker.Internet.user_name();
+          return expect(Faker.Name.last_name).toHaveBeenCalled();
+        });
+        it("expects to have fixed umlauts", function() {
+          Faker.Internet.user_name();
+          return expect(Faker.Util.fix_umlauts).toHaveBeenCalled();
+        });
+        return it("returns a string without whitespace characters", function() {
+          return expect(Faker.Internet.user_name()).not.toMatch(/\W/gi);
         });
       });
     });

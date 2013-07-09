@@ -183,7 +183,17 @@
       return [this.user_name(), "example." + (Faker.Util.Random.sample(['com', 'net', 'org']))].join('@');
     },
     user_name: function() {
-      return 'blah';
+      var samples;
+      samples = [
+        (function() {
+          return Faker.Name.first_name();
+        }), (function() {
+          return $.map([Faker.Name.first_name(), Faker.Name.last_name()], function(elm, index) {
+            return elm.replace(/\W/, '');
+          }).join('_').toLowerCase();
+        })
+      ];
+      return Faker.Util.fix_umlauts(Faker.Util.Random.sample(samples).call());
     },
     domain_name: function() {
       return 'example.com';

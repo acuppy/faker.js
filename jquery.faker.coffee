@@ -150,7 +150,13 @@
       [ @user_name(), "example.#{Faker.Util.Random.sample(['com', 'net', 'org'])}" ].join('@')
 
     user_name: ->
-      'blah'
+      samples = [
+        (-> Faker.Name.first_name()),
+        (-> $.map([ Faker.Name.first_name(), Faker.Name.last_name()], (elm, index) -> 
+            elm.replace(/\W/, '')).join('_').toLowerCase())
+      ]
+
+      Faker.Util.fix_umlauts( Faker.Util.Random.sample(samples).call() )
 
     domain_name: ->
       'example.com'

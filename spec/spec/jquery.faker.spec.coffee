@@ -282,6 +282,27 @@ describe "Faker", ->
       it "expects to have used Faker.Internet.user_name", ->
         Faker.Internet.safe_email()
         expect(Faker.Internet.user_name).toHaveBeenCalled();
+
+    describe "#user_name", ->
+      beforeEach ->
+        spyOn(Faker.Name, 'first_name').andCallThrough()
+        spyOn(Faker.Name, 'last_name').andCallThrough()
+        spyOn(Faker.Util, 'fix_umlauts').andCallThrough()
+
+      it "expects to have used Faker.Name.first_name", ->
+        Faker.Internet.user_name()
+        expect(Faker.Name.first_name).toHaveBeenCalled()
+
+      it "expects to have used Faker.Name.last_name", ->
+        Faker.Internet.user_name()
+        expect(Faker.Name.last_name).toHaveBeenCalled()
+
+      it "expects to have fixed umlauts", ->
+        Faker.Internet.user_name()
+        expect(Faker.Util.fix_umlauts).toHaveBeenCalled()
+
+      it "returns a string without whitespace characters", ->
+        expect(Faker.Internet.user_name()).not.toMatch(/\W/gi)
      
   describe "Faker.Util", ->
     it "binds to Faker", ->
