@@ -2,4 +2,4 @@
 
 A port of the common Ruby and Java Faker libraries to inject readable data into a container
 
-_Currently under development_
+UNDER DEVELOPMENT
