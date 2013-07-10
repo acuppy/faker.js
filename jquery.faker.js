@@ -186,10 +186,10 @@
       var samples;
       samples = [
         (function() {
-          return Faker.Name.first_name();
+          return Faker.Util.fix_non_word_chars(Faker.Name.first_name());
         }), (function() {
           return $.map([Faker.Name.first_name(), Faker.Name.last_name()], function(elm, index) {
-            return elm.replace(/\W/, '');
+            return Faker.Util.fix_non_word_chars(elm);
           }).join('_').toLowerCase();
         })
       ];
@@ -199,10 +199,24 @@
       return [Faker.Util.fix_umlauts(this.domain_word()), this.domain_suffix()].join('.');
     },
     domain_word: function() {
-      return Faker.Company.name().split(' ')[0].replace(/\W/, '').toLowerCase();
+      return Faker.Util.fix_non_word_chars(Faker.Company.name().split(' ')[0]).toLowerCase();
     },
     domain_suffix: function() {
       return Faker.Locale.sample('internet.domain_suffix');
+    },
+    ip_v4_address: function() {
+      var address, i, range;
+      range = Faker.Util.Numbers.range(2, 254);
+      address = [];
+      for (i = 1; i <= 4; i++) {
+        address.push(Faker.Util.Random.sample(range));
+      }
+      return address.join('.');
+    },
+    slug: function(words, glue) {
+      glue || (glue = Faker.Util.Random.sample(['-', '_', '.']));
+      words || (words = Faker.Lorem.words(2).join(' '));
+      return words.split(/\s+/gi).join(glue).toLowerCase();
     }
   });
 
@@ -231,6 +245,9 @@
       string = string.replace("ü", 'ue');
       string = string.replace("ß", 'ss');
       return string;
+    },
+    fix_non_word_chars: function(string) {
+      return string.replace(/\W/gi, '');
     }
   };
 
@@ -254,6 +271,31 @@
       } else {
         return shuffled.slice(0, 1)[0];
       }
+    }
+  };
+
+  Faker.Util.Numbers = {
+    range: function(start, end) {
+      var i, range;
+      range = [];
+      for (i = start; start <= end ? i <= end : i >= end; start <= end ? i++ : i--) {
+        range.push(i);
+      }
+      return range;
+    }
+  };
+
+  Faker.Util.Alpha = {
+    range: function(start, end) {
+      var chars, index, range;
+      chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+      range = [];
+      start = $.inArray(start, chars);
+      end = $.inArray(end, chars);
+      for (index = start; start <= end ? index <= end : index >= end; start <= end ? index++ : index--) {
+        range.push(chars[index]);
+      }
+      return range;
     }
   };
 

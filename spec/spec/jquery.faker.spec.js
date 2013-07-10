@@ -110,7 +110,7 @@
           });
           describe("startWithCapital", function() {
             it("returns a string that starts capitalized", function() {
-              return expect(Faker.Lorem.sentence()).toMatch(/^[^a-z](?:[a-zA-Z]+\s?)+\.?$/);
+              return expect(Faker.Lorem.sentence()).toMatch(/^[^a-z][A-Z]?(?:[a-zA-Z]+\s?)+\.?$/);
             });
             return it("returns a string that does NOT start capitalized", function() {
               return expect(Faker.Lorem.sentence({
@@ -292,7 +292,7 @@
           return spyOn(Faker.Internet, 'domain_name').andCallThrough();
         });
         it("returns an email address from a username and domain", function() {
-          return expect(Faker.Internet.email()).toMatch(/[a-zA-Z0-9]+\@[a-zA-Z]+\.[a-z]{2,}/);
+          return expect(Faker.Internet.email()).toMatch(/\w+\@[a-zA-Z]+\.[a-z]{2,}/);
         });
         it("expects to have used Faker.Internet.user_name", function() {
           Faker.Internet.email();
@@ -308,7 +308,7 @@
           return spyOn(Faker.Internet, 'user_name').andCallThrough();
         });
         it("returns an email address for a popular free email provider", function() {
-          return expect(Faker.Internet.free_email()).toMatch(/[a-zA-Z0-9]+\@(?:gmail|yahoo|hotmail)\.com/);
+          return expect(Faker.Internet.free_email()).toMatch(/\w+\@(?:gmail|yahoo|hotmail)\.com/);
         });
         return it("expects to have used Faker.Internet.user_name", function() {
           Faker.Internet.free_email();
@@ -320,7 +320,7 @@
           return spyOn(Faker.Internet, 'user_name').andCallThrough();
         });
         it("returns an email address using example as the domain", function() {
-          return expect(Faker.Internet.safe_email()).toMatch(/[a-zA-Z0-9]+\@example\.(?:com|net|org)/);
+          return expect(Faker.Internet.safe_email()).toMatch(/\w+\@example\.(?:com|net|org)/);
         });
         return it("expects to have used Faker.Internet.user_name", function() {
           Faker.Internet.safe_email();
@@ -350,7 +350,7 @@
           return spyOn(Faker.Util, 'fix_umlauts').andCallThrough();
         });
         it("returns a string with a TLD", function() {
-          return expect(Faker.Internet.domain_name()).toMatch(/[a-z]+\.[a-z]{2,}/);
+          return expect(Faker.Internet.domain_name()).toMatch(/\w+\.[a-z]{2,}/);
         });
         it("expects to have fixed umlauts", function() {
           Faker.Internet.domain_name();
@@ -361,16 +361,45 @@
           return expect(Faker.Internet.domain_word).toHaveBeenCalled();
         });
       });
-      return describe("#domain_word", function() {
+      describe("#domain_word", function() {
         beforeEach(function() {
           return spyOn(Faker.Company, 'name').andCallThrough();
         });
         it("returns a string", function() {
-          return expect(Faker.Internet.domain_word()).not.toMatch(/\W/);
+          return expect(Faker.Internet.domain_word()).not.toMatch(/\W/gi);
         });
         return it("expects to have called Faker.Company.name", function() {
           Faker.Company.name();
           return expect(Faker.Company.name).toHaveBeenCalled();
+        });
+      });
+      describe("#domain_suffix", function() {
+        return it("returns a TLD", function() {
+          return expect($.inArray(Faker.Internet.domain_suffix(), ["com", "biz", "info", "name", "net", "org"])).toBeTruthy();
+        });
+      });
+      describe("#ip_v4_address", function() {
+        return it("returns a valid formatted ipv4 address", function() {
+          return expect(Faker.Internet.ip_v4_address()).toMatch(/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/);
+        });
+      });
+      describe("#ip_v6_address", function() {
+        return it("returns a valid formatted ipv6 address", function() {
+          pending();
+          return expect(Faker.Internet.ip_v6_address()).toMatch(/^$/);
+        });
+      });
+      return describe("#slug", function() {
+        it("returns a string separated", function() {
+          return expect(Faker.Internet.slug()).toMatch(/^[a-zA-Z0-9\-\_\.]+$/);
+        });
+        return describe("with options", function() {
+          it("should use the words provided", function() {
+            return expect(Faker.Internet.slug('happy birthday')).toMatch(/^happy(?:[\-\_\.])birthday$/);
+          });
+          return it("should use the glue provided", function() {
+            return expect(Faker.Internet.slug('happy birthday', ':')).toMatch(/^happy:birthday$/);
+          });
         });
       });
     });
@@ -439,7 +468,7 @@
           return expect(Faker.Util.interpret(str)).toEqual(exp);
         });
       });
-      return describe("#fix_umlauts", function() {
+      describe("#fix_umlauts", function() {
         var umlauts;
         umlauts = {
           "ä": 'ae',
@@ -458,6 +487,37 @@
         });
         return it("should fix ß", function() {
           return expect(Faker.Util.fix_umlauts('hßppy')).toEqual('hssppy');
+        });
+      });
+      return describe("#fix_non_word_chars", function() {
+        it("should convert apostrophies", function() {
+          return expect(Faker.Util.fix_non_word_chars("o'reilly")).toEqual('oreilly');
+        });
+        it("should convert commas", function() {
+          return expect(Faker.Util.fix_non_word_chars("o,reilly")).toEqual('oreilly');
+        });
+        it("should convert spaces", function() {
+          return expect(Faker.Util.fix_non_word_chars("o reilly")).toEqual('oreilly');
+        });
+        return it("should convert random non-word characters", function() {
+          return expect(Faker.Util.fix_non_word_chars("o*%^$^%$reilly")).toEqual('oreilly');
+        });
+      });
+    });
+    describe("Faker.Util.Numbers", function() {
+      return describe("#range", function() {
+        return it("returns an array of numbers", function() {
+          return expect(Faker.Util.Numbers.range(1, 10)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+        });
+      });
+    });
+    describe("Faker.Util.Alpha", function() {
+      return describe("#range", function() {
+        it("returns an array of alpha characters", function() {
+          return expect(Faker.Util.Alpha.range('a', 'e')).toEqual(['a', 'b', 'c', 'd', 'e']);
+        });
+        return it("returns an array of alpha characters that span capitalization", function() {
+          return expect(Faker.Util.Alpha.range('y', 'B')).toEqual(['y', 'z', 'A', 'B']);
         });
       });
     });

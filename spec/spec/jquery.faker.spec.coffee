@@ -95,7 +95,7 @@ describe "Faker", ->
 
         describe "startWithCapital", ->
           it "returns a string that starts capitalized", ->
-            expect(Faker.Lorem.sentence()).toMatch(/^[^a-z](?:[a-zA-Z]+\s?)+\.?$/)
+            expect(Faker.Lorem.sentence()).toMatch(/^[^a-z][A-Z]?(?:[a-zA-Z]+\s?)+\.?$/)
          
           it "returns a string that does NOT start capitalized", ->
             expect(Faker.Lorem.sentence({
@@ -251,7 +251,7 @@ describe "Faker", ->
         spyOn(Faker.Internet, 'domain_name').andCallThrough()
 
       it "returns an email address from a username and domain", ->
-        expect(Faker.Internet.email()).toMatch(/[a-zA-Z0-9]+\@[a-zA-Z]+\.[a-z]{2,}/)
+        expect(Faker.Internet.email()).toMatch(/\w+\@[a-zA-Z]+\.[a-z]{2,}/)
 
       it "expects to have used Faker.Internet.user_name", ->
         Faker.Internet.email()
@@ -266,7 +266,7 @@ describe "Faker", ->
         spyOn(Faker.Internet, 'user_name').andCallThrough()
 
       it "returns an email address for a popular free email provider", ->
-        expect(Faker.Internet.free_email()).toMatch(/[a-zA-Z0-9]+\@(?:gmail|yahoo|hotmail)\.com/)
+        expect(Faker.Internet.free_email()).toMatch(/\w+\@(?:gmail|yahoo|hotmail)\.com/)
 
       it "expects to have used Faker.Internet.user_name", ->
         Faker.Internet.free_email()
@@ -277,7 +277,7 @@ describe "Faker", ->
         spyOn(Faker.Internet, 'user_name').andCallThrough()
 
       it "returns an email address using example as the domain", ->
-        expect(Faker.Internet.safe_email()).toMatch(/[a-zA-Z0-9]+\@example\.(?:com|net|org)/)
+        expect(Faker.Internet.safe_email()).toMatch(/\w+\@example\.(?:com|net|org)/)
 
       it "expects to have used Faker.Internet.user_name", ->
         Faker.Internet.safe_email()
@@ -305,7 +305,7 @@ describe "Faker", ->
         spyOn(Faker.Util, 'fix_umlauts').andCallThrough()
 
       it "returns a string with a TLD", ->
-        expect(Faker.Internet.domain_name()).toMatch(/[a-z]+\.[a-z]{2,}/)
+        expect(Faker.Internet.domain_name()).toMatch(/\w+\.[a-z]{2,}/)
 
       it "expects to have fixed umlauts", ->
         Faker.Internet.domain_name()
@@ -320,7 +320,7 @@ describe "Faker", ->
         spyOn(Faker.Company, 'name').andCallThrough()
 
       it "returns a string", ->
-        expect(Faker.Internet.domain_word()).not.toMatch(/\W/)
+        expect(Faker.Internet.domain_word()).not.toMatch(/\W/gi)
 
       it "expects to have called Faker.Company.name", ->
         Faker.Company.name()
@@ -328,8 +328,28 @@ describe "Faker", ->
 
     describe "#domain_suffix", ->
       it "returns a TLD", ->
-        expect( $.inArray(Faker.Internet.domain_suffix(), ["com", "biz", "info", "name", "net", "org"]).toBeTruthy()
-     
+        expect( $.inArray(Faker.Internet.domain_suffix(), ["com", "biz", "info", "name", "net", "org"])).toBeTruthy()
+
+    describe "#ip_v4_address", ->
+      it "returns a valid formatted ipv4 address", ->
+        expect( Faker.Internet.ip_v4_address() ).toMatch(/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/)
+
+    describe "#ip_v6_address", ->
+      it "returns a valid formatted ipv6 address", ->
+        pending()
+        expect( Faker.Internet.ip_v6_address() ).toMatch(/^$/)
+
+    describe "#slug", ->
+      it "returns a string separated", ->
+        expect(Faker.Internet.slug()).toMatch(/^[a-zA-Z0-9\-\_\.]+$/)
+
+      describe "with options", ->
+        it "should use the words provided", ->
+          expect(Faker.Internet.slug('happy birthday')).toMatch(/^happy(?:[\-\_\.])birthday$/)
+
+        it "should use the glue provided", ->
+          expect(Faker.Internet.slug('happy birthday', ':')).toMatch(/^happy:birthday$/)        
+
   describe "Faker.Util", ->
     it "binds to Faker", ->
       expect(Faker.Util).toBeDefined()
@@ -401,6 +421,32 @@ describe "Faker", ->
 
       it "should fix ß", ->
         expect(Faker.Util.fix_umlauts('hßppy')).toEqual('hssppy')
+
+    describe "#fix_non_word_chars", ->
+      it "should convert apostrophies", ->
+        expect(Faker.Util.fix_non_word_chars("o'reilly")).toEqual('oreilly')
+
+      it "should convert commas", ->
+        expect(Faker.Util.fix_non_word_chars("o,reilly")).toEqual('oreilly')
+
+      it "should convert spaces", ->
+        expect(Faker.Util.fix_non_word_chars("o reilly")).toEqual('oreilly')
+
+      it "should convert random non-word characters", ->
+        expect(Faker.Util.fix_non_word_chars("o*%^$^%$reilly")).toEqual('oreilly')
+
+  describe "Faker.Util.Numbers", ->
+    describe "#range", ->
+      it "returns an array of numbers", ->
+        expect(Faker.Util.Numbers.range(1,10)).toEqual([1,2,3,4,5,6,7,8,9,10])
+
+  describe "Faker.Util.Alpha", ->
+    describe "#range", ->
+      it "returns an array of alpha characters", ->
+        expect(Faker.Util.Alpha.range('a','e')).toEqual(['a','b','c','d','e'])
+
+      it "returns an array of alpha characters that span capitalization", ->
+        expect(Faker.Util.Alpha.range('y','B')).toEqual(['y','z','A','B'])
      
   describe "Faker.Locale", ->
     it "binds to Faker", ->

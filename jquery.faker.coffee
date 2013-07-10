@@ -151,9 +151,9 @@
 
     user_name: ->
       samples = [
-        (-> Faker.Name.first_name()),
+        (-> Faker.Util.fix_non_word_chars(Faker.Name.first_name())),
         (-> $.map([ Faker.Name.first_name(), Faker.Name.last_name()], (elm, index) -> 
-            elm.replace(/\W/, '')).join('_').toLowerCase())
+            Faker.Util.fix_non_word_chars(elm)).join('_').toLowerCase())
       ]
 
       Faker.Util.fix_umlauts( Faker.Util.Random.sample(samples).call() )
@@ -162,10 +162,23 @@
       [ Faker.Util.fix_umlauts( @domain_word() ), @domain_suffix() ].join('.')
 
     domain_word: ->
-      Faker.Company.name().split(' ')[0].replace(/\W/, '').toLowerCase()
+      Faker.Util.fix_non_word_chars(Faker.Company.name().split(' ')[0]).toLowerCase()
 
     domain_suffix: ->
       Faker.Locale.sample('internet.domain_suffix')
+
+    ip_v4_address: ->
+      range   = Faker.Util.Numbers.range(2,254)
+      address = []
+      for i in [1..4]
+        address.push Faker.Util.Random.sample(range)
+
+      address.join('.')
+
+    slug: (words, glue) ->
+      glue  or= Faker.Util.Random.sample(['-','_','.'])
+      words or= Faker.Lorem.words(2).join(' ')
+      words.split(/\s+/gi).join(glue).toLowerCase()
 
   Faker.Util = 
     isBlank: (object) ->
@@ -194,6 +207,9 @@
       string = string.replace("ß", 'ss')
       string
 
+    fix_non_word_chars: (string) ->
+      string.replace(/\W/gi, '')
+
   Faker.Util.Random = 
     bool: ->
       (Math.floor(Math.random()*11) % 2) == 1
@@ -210,6 +226,24 @@
         shuffled[i] = temp
 
       if size > 1 then shuffled.slice(0, size) else shuffled.slice(0,1)[0]
+
+  Faker.Util.Numbers = 
+    range: (start, end) ->
+      range = []
+      for i in [start..end]
+        range.push i
+      range
+
+  Faker.Util.Alpha = 
+    range: (start, end) ->
+      chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+      range = []
+      start = $.inArray(start, chars)
+      end   = $.inArray(end, chars)
+
+      for index in [start..end]
+        range.push chars[index]
+      range
 
   Faker.Locale = 
     sample: (key, size) ->
