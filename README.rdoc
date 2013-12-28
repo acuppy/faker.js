@@ -2,5 +2,3 @@
 {<img src="https://codeclimate.com/github/acuppy/jquery.faker.js.png" />}[https://codeclimate.com/github/acuppy/jquery.faker.js]
 
 A port of the common Ruby and Java Faker libraries to inject readable data into a container
-
-UNDER DEVELOPMENT
