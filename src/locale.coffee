@@ -1,6 +1,6 @@
-Faker.Locale = 
+Faker.Locale =
   sample: (key, size) ->
-    collection = this.collection(key)
+    collection = @collection(key)
     Faker.Util.Random.sample(collection, size)
 
   collection: (key) ->
@@ -11,7 +11,7 @@ Faker.Locale =
     for i in [0...arrPath.length]
       collection = collection[arrPath[i]]
 
-    $.error "Unknown key: \"#{key.toString()}\" -- you may need to scope it to the proper locale library (ex: name.first_name)" if Faker.Util.isBlank(collection)
+    $.error "Unknown key: \"#{key.toString()}\" -- you may need to scope it to the proper locale library (e.g. \"name.first_name\")" if Faker.Util.isBlank(collection)
 
     collection
 

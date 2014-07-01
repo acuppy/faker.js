@@ -1,6 +1,8 @@
 $ = jQuery
 
-@.Faker.Base =
+Faker = {}
+
+Faker.Base =
   config: {}
   reset: ->
     @configure {}
@@ -18,4 +20,6 @@ $ = jQuery
   extend: (extension) ->
     $.extend(true, {}, this, extension || {})
 
-@.Faker = $.extend(true, {}, @.Faker.Base)
+Faker.Base.init = Faker.Base.reset
+
+Faker = $.extend(true, {}, Faker.Base)
