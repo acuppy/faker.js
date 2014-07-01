@@ -11,7 +11,7 @@ Faker.Internet = Faker.extend
   user_name: ->
     samples = [
       (-> Faker.Util.fix_non_word_chars(Faker.Name.first_name())),
-      (-> $.map([ Faker.Name.first_name(), Faker.Name.last_name()], (elm, index) -> 
+      (-> $.map([ Faker.Name.first_name(), Faker.Name.last_name()], (elm, index) ->
           Faker.Util.fix_non_word_chars(elm)).join('_').toLowerCase())
     ]
 
