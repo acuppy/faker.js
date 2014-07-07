@@ -23,4 +23,5 @@ Faker.Locale =
     Faker.Locales[id] ?= {}
     $.extend(true, Faker.Locales[id], collection)
 
-Faker.Locales = {}
+Faker.sample = Faker.Locale.sample
+Faker.collection = Faker.Locale.collection
