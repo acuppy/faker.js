@@ -11,6 +11,7 @@ module.exports = (grunt) ->
         files:
           'dist/<%= pkg.name %>.js': [
             "src/base.coffee",
+            "src/faker.coffee",
             "src/util.coffee",
             "src/locale.coffee",
             "src/extensions/*.coffee",
