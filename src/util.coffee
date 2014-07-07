@@ -9,9 +9,9 @@ Faker.Util =
    !@isBlank.apply(@, arguments)
 
   interpret: (raw) ->
-    alpha_templates = raw.match(/(?:(#{[a-zA-Z\.\-\_]+})|(#(?!{)))/gi) or []
+    alphaTemplates = raw.match(/(?:(#{[a-zA-Z\.\-\_]+})|(#(?!{)))/gi) or []
     # numberic_templates = raw.match(/(#(?!{))/gi) or []
-    blocksToInterpret = alpha_templates #.concat(numberic_templates)
+    blocksToInterpret = alphaTemplates #= raw.concat(numberic_templates)
 
     $.each(blocksToInterpret, (index, elm) =>
       key = elm.replace(/[#{}\s]/gi, '')
@@ -21,10 +21,10 @@ Faker.Util =
     )
     raw
 
-  fix_umlauts: (string) ->
+  fixUmlauts: (string) ->
     @arrayReplace(string, ["ä", 'ae'], ["ö", 'oe'], ["ü", 'ue'], ["ß", 'ss'])
 
-  fix_non_word_chars: (string) ->
+  fixNonWordChars: (string) ->
     string.replace(/\W/gi, '')
 
   mapConcat: (str, args...) ->

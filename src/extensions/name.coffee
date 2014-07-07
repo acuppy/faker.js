@@ -1,27 +1,27 @@
 Faker.Name = Faker.extend
-  full_name: ->
-    name = new Array();
-    name.push this.prefix() if Faker.Util.Random.bool()
-    name.push this.first_name()
-    name.push this.last_name()
-    name.push this.suffix() if Faker.Util.Random.bool()
+  fullName: ->
+    name = new Array()
+    name.push @prefix() if Faker.Util.Random.bool()
+    name.push @firstName()
+    name.push @lastName()
+    name.push @suffix() if Faker.Util.Random.bool()
     name.join(' ')
 
   prefix: ->
-    Faker.Locale.sample('name.prefix')
+    @sample('name.prefix')
 
-  first_name: ->
-    Faker.Locale.sample('name.first_name')
+  firstName: ->
+    @sample('name.firstName')
 
-  last_name: ->
-    Faker.Locale.sample('name.last_name')
+  lastName: ->
+    @sample('name.lastName')
 
   suffix: ->
-    Faker.Locale.sample('name.suffix')
+    @sample('name.suffix')
 
   title: ->
     title = new Array()
-    title.push Faker.Locale.sample('name.title.descriptor')
-    title.push Faker.Locale.sample('name.title.level')
-    title.push Faker.Locale.sample('name.title.job')
+    title.push @sample('name.title.descriptor')
+    title.push @sample('name.title.level')
+    title.push @sample('name.title.job')
     title.join(' ')

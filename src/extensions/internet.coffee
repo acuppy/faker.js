@@ -1,32 +1,32 @@
 Faker.Internet = Faker.extend
   email: ->
-    [ @user_name(), @domain_name() ].join('@')
+    [ @userName(), @domainName() ].join('@')
 
-  free_email: ->
-    [ @user_name(), Faker.Locale.sample('internet.free_email') ].join('@')
+  freeEmail: ->
+    [ @userName(), @sample('internet.freeEmail') ].join('@')
 
-  safe_email: ->
-    [ @user_name(), "example.#{Faker.Util.Random.sample(['com', 'net', 'org'])}" ].join('@')
+  safeEmail: ->
+    [ @userName(), "example.#{Faker.Util.Random.sample(['com', 'net', 'org'])}" ].join('@')
 
-  user_name: ->
+  userName: ->
     samples = [
-      (-> Faker.Util.fix_non_word_chars(Faker.Name.first_name())),
-      (-> $.map([ Faker.Name.first_name(), Faker.Name.last_name()], (elm, index) ->
-          Faker.Util.fix_non_word_chars(elm)).join('_').toLowerCase())
+      (-> Faker.Util.fixNonWordChars(Faker.Name.firstName())),
+      (-> $.map([ Faker.Name.firstName(), Faker.Name.lastName()], (elm, index) ->
+          Faker.Util.fixNonWordChars(elm)).join('_').toLowerCase())
     ]
 
-    Faker.Util.fix_umlauts( Faker.Util.Random.sample(samples).call() )
+    Faker.Util.fixUmlauts( Faker.Util.Random.sample(samples).call() )
 
-  domain_name: ->
-    [ Faker.Util.fix_umlauts( @domain_word() ), @domain_suffix() ].join('.')
+  domainName: ->
+    [ Faker.Util.fixUmlauts( @domainWord() ), @domainSuffix() ].join('.')
 
-  domain_word: ->
-    Faker.Util.fix_non_word_chars(Faker.Company.name().split(' ')[0]).toLowerCase()
+  domainWord: ->
+    Faker.Util.fixNonWordChars(Faker.Company.name().split(' ')[0]).toLowerCase()
 
-  domain_suffix: ->
-    Faker.Locale.sample('internet.domain_suffix')
+  domainSuffix: ->
+    @sample('internet.domainSuffix')
 
-  ip_v4_address: ->
+  ipV4Address: ->
     range   = Faker.Util.Numbers.range(2,254)
     address = []
     for i in [1..4]
