@@ -1,10 +1,11 @@
+Faker.Locales = {}
+
 Faker.Locale =
   sample: (key, size) ->
     collection = @collection(key)
     Faker.Util.Random.sample(collection, size)
 
   collection: (key) ->
-
     collection = Faker.Locales[Faker.config.locale]
     arrPath    = key.split(".")
 

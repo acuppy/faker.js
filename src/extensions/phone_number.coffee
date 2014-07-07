@@ -1,5 +1,5 @@
 Faker.PhoneNumber = Faker.extend
-  phone_number: ->
-    Faker.Util.interpret(Faker.Locale.sample('phone_number.formats'))
+  phoneNumber: ->
+    Faker.Util.interpret @sample('phoneNumber.formats')
 
-  toll_free: ->
+  tollFree: ->

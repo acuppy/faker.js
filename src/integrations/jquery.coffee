@@ -1,4 +1,3 @@
-$ = jQuery
+jQuery.fn.faker = (extension) ->
+  @each ->
 
-$.fn.faker = ->
-  this.each ->
