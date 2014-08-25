@@ -1,3 +1,27 @@
+describe("Faker.Error", function() {
+  beforeEach(function() {
+    this.message = "An error";
+    return this.error = new Faker.Error(this.message);
+  });
+  return it("accepts a list of error strings", function() {
+    return expect(this.error.toString()).toBe(this.message);
+  });
+});
+
+describe("Faker.Errors", function() {
+  return describe("adding error strings to the collection", function() {
+    beforeEach(function() {
+      this.message_one = "Error message one";
+      return this.message_two = "Error message two";
+    });
+    return it("includes both messages", function() {
+      Faker.Errors.add(this.message_one);
+      Faker.Errors.add(this.message_two);
+      return expect(Faker.Errors.fullMessages()).toContain(this.message_one, this.message_two);
+    });
+  });
+});
+
 describe("Faker", function() {
   it("binds to the window", function() {
     return expect(Faker).toBeDefined();
@@ -200,13 +224,13 @@ describe("Faker", function() {
       name = null;
       beforeEach(function() {
         spyOn(Faker.Util.Random, 'bool').andReturn(true);
-        parts = Faker.Name.full_name().split(' ');
+        parts = Faker.Name.fullName().split(' ');
         return name = Faker.Locales.en.name;
       });
       return it("returns a fullname", function() {
         expect($.inArray(parts[0], name.prefix)).toBeTruthy();
-        expect($.inArray(parts[1], name.first_name)).toBeTruthy();
-        expect($.inArray(parts[2], name.last_name)).toBeTruthy();
+        expect($.inArray(parts[1], name.firstName)).toBeTruthy();
+        expect($.inArray(parts[2], name.lastName)).toBeTruthy();
         return expect($.inArray(parts[3], name.suffix)).toBeTruthy();
       });
     });
@@ -215,14 +239,14 @@ describe("Faker", function() {
         return expect($.inArray(Faker.Name.prefix(), Faker.Locales.en.name.prefix)).toBeTruthy();
       });
     });
-    describe("#first_name", function() {
+    describe("#firstName", function() {
       return it("returns a first name", function() {
-        return expect($.inArray(Faker.Name.first_name(), Faker.Locales.en.name.first_name)).toBeTruthy();
+        return expect($.inArray(Faker.Name.firstName(), Faker.Locales.en.name.firstName)).toBeTruthy();
       });
     });
-    describe("#last_name", function() {
+    describe("#lastName", function() {
       return it("returns a last name", function() {
-        return expect($.inArray(Faker.Name.last_name(), Faker.Locales.en.name.last_name)).toBeTruthy();
+        return expect($.inArray(Faker.Name.lastName(), Faker.Locales.en.name.lastName)).toBeTruthy();
       });
     });
     describe("#suffix", function() {
@@ -263,12 +287,12 @@ describe("Faker", function() {
         return expect(Faker.Company.suffix()).toMatch(/^(?:[a-zA-Z]+\s?)+$/);
       });
     });
-    describe("#catch_phrase", function() {
+    describe("#catchPhrase", function() {
       it("returns a string", function() {
-        return expect($.type(Faker.Company.catch_phrase())).toEqual('string');
+        return expect($.type(Faker.Company.catchPhrase())).toEqual('string');
       });
       return it("returns a sentence of values", function() {
-        return expect(Faker.Company.catch_phrase()).toMatch(/^(?:[a-zA-Z0-9\-\/,']+\s?)+$/);
+        return expect(Faker.Company.catchPhrase()).toMatch(/^(?:[a-zA-Z0-9\-\/,']+\s?)+$/);
       });
     });
     return describe("#bs", function() {
@@ -286,105 +310,105 @@ describe("Faker", function() {
     });
     describe("#email", function() {
       beforeEach(function() {
-        spyOn(Faker.Internet, 'user_name').andCallThrough();
-        return spyOn(Faker.Internet, 'domain_name').andCallThrough();
+        spyOn(Faker.Internet, 'userName').andCallThrough();
+        return spyOn(Faker.Internet, 'domainName').andCallThrough();
       });
       it("returns an email address from a username and domain", function() {
         return expect(Faker.Internet.email()).toMatch(/\w+\@[a-zA-Z]+\.[a-z]{2,}/);
       });
-      it("expects to have used Faker.Internet.user_name", function() {
+      it("expects to have used Faker.Internet.userName", function() {
         Faker.Internet.email();
-        return expect(Faker.Internet.user_name).toHaveBeenCalled();
+        return expect(Faker.Internet.userName).toHaveBeenCalled();
       });
-      return it("expects to have used Faker.Internet.domain_name", function() {
+      return it("expects to have used Faker.Internet.domainName", function() {
         Faker.Internet.email();
-        return expect(Faker.Internet.domain_name).toHaveBeenCalled();
+        return expect(Faker.Internet.domainName).toHaveBeenCalled();
       });
     });
-    describe("#free_email", function() {
+    describe("#freeEmail", function() {
       beforeEach(function() {
-        return spyOn(Faker.Internet, 'user_name').andCallThrough();
+        return spyOn(Faker.Internet, 'userName').andCallThrough();
       });
       it("returns an email address for a popular free email provider", function() {
-        return expect(Faker.Internet.free_email()).toMatch(/\w+\@(?:gmail|yahoo|hotmail)\.com/);
+        return expect(Faker.Internet.freeEmail()).toMatch(/\w+\@(?:gmail|yahoo|hotmail)\.com/);
       });
-      return it("expects to have used Faker.Internet.user_name", function() {
-        Faker.Internet.free_email();
-        return expect(Faker.Internet.user_name).toHaveBeenCalled();
+      return it("expects to have used Faker.Internet.userName", function() {
+        Faker.Internet.freeEmail();
+        return expect(Faker.Internet.userName).toHaveBeenCalled();
       });
     });
-    describe("#safe_email", function() {
+    describe("#safeEmail", function() {
       beforeEach(function() {
-        return spyOn(Faker.Internet, 'user_name').andCallThrough();
+        return spyOn(Faker.Internet, 'userName').andCallThrough();
       });
       it("returns an email address using example as the domain", function() {
-        return expect(Faker.Internet.safe_email()).toMatch(/\w+\@example\.(?:com|net|org)/);
+        return expect(Faker.Internet.safeEmail()).toMatch(/\w+\@example\.(?:com|net|org)/);
       });
-      return it("expects to have used Faker.Internet.user_name", function() {
-        Faker.Internet.safe_email();
-        return expect(Faker.Internet.user_name).toHaveBeenCalled();
+      return it("expects to have used Faker.Internet.userName", function() {
+        Faker.Internet.safeEmail();
+        return expect(Faker.Internet.userName).toHaveBeenCalled();
       });
     });
-    describe("#user_name", function() {
+    describe("#userName", function() {
       beforeEach(function() {
-        spyOn(Faker.Name, 'first_name').andCallThrough();
-        return spyOn(Faker.Util, 'fix_umlauts').andCallThrough();
+        spyOn(Faker.Name, 'firstName').andCallThrough();
+        return spyOn(Faker.Util, 'fixUmlauts').andCallThrough();
       });
-      it("expects to have used Faker.Name.first_name", function() {
-        Faker.Internet.user_name();
-        return expect(Faker.Name.first_name).toHaveBeenCalled();
+      it("expects to have used Faker.Name.firstName", function() {
+        Faker.Internet.userName();
+        return expect(Faker.Name.firstName).toHaveBeenCalled();
       });
       it("expects to have fixed umlauts", function() {
-        Faker.Internet.user_name();
-        return expect(Faker.Util.fix_umlauts).toHaveBeenCalled();
+        Faker.Internet.userName();
+        return expect(Faker.Util.fixUmlauts).toHaveBeenCalled();
       });
       return it("returns a string without whitespace characters", function() {
-        return expect(Faker.Internet.user_name()).not.toMatch(/\W/gi);
+        return expect(Faker.Internet.userName()).not.toMatch(/\W/gi);
       });
     });
-    describe("#domain_name", function() {
+    describe("#domainName", function() {
       beforeEach(function() {
-        spyOn(Faker.Internet, 'domain_word').andCallThrough();
-        return spyOn(Faker.Util, 'fix_umlauts').andCallThrough();
+        spyOn(Faker.Internet, 'domainWord').andCallThrough();
+        return spyOn(Faker.Util, 'fixUmlauts').andCallThrough();
       });
       it("returns a string with a TLD", function() {
-        return expect(Faker.Internet.domain_name()).toMatch(/\w+\.[a-z]{2,}/);
+        return expect(Faker.Internet.domainName()).toMatch(/\w+\.[a-z]{2,}/);
       });
       it("expects to have fixed umlauts", function() {
-        Faker.Internet.domain_name();
-        return expect(Faker.Util.fix_umlauts).toHaveBeenCalled();
+        Faker.Internet.domainName();
+        return expect(Faker.Util.fixUmlauts).toHaveBeenCalled();
       });
-      return it("expects to have domain_word called", function() {
-        Faker.Internet.domain_name();
-        return expect(Faker.Internet.domain_word).toHaveBeenCalled();
+      return it("expects to have domainWord called", function() {
+        Faker.Internet.domainName();
+        return expect(Faker.Internet.domainWord).toHaveBeenCalled();
       });
     });
-    describe("#domain_word", function() {
+    describe("#domainWord", function() {
       beforeEach(function() {
         return spyOn(Faker.Company, 'name').andCallThrough();
       });
       it("returns a string", function() {
-        return expect(Faker.Internet.domain_word()).not.toMatch(/\W/gi);
+        return expect(Faker.Internet.domainWord()).not.toMatch(/\W/gi);
       });
       return it("expects to have called Faker.Company.name", function() {
         Faker.Company.name();
         return expect(Faker.Company.name).toHaveBeenCalled();
       });
     });
-    describe("#domain_suffix", function() {
+    describe("#domainSuffix", function() {
       return it("returns a TLD", function() {
-        return expect($.inArray(Faker.Internet.domain_suffix(), ["com", "biz", "info", "name", "net", "org"])).toBeTruthy();
+        return expect($.inArray(Faker.Internet.domainSuffix(), ["com", "biz", "info", "name", "net", "org"])).toBeTruthy();
       });
     });
-    describe("#ip_v4_address", function() {
+    describe("#ipV4Address", function() {
       return it("returns a valid formatted ipv4 address", function() {
-        return expect(Faker.Internet.ip_v4_address()).toMatch(/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/);
+        return expect(Faker.Internet.ipV4Address()).toMatch(/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/);
       });
     });
-    describe("#ip_v6_address", function() {
+    describe("#ipV6Address", function() {
       return it("returns a valid formatted ipv6 address", function() {
         pending();
-        return expect(Faker.Internet.ip_v6_address()).toMatch(/^$/);
+        return expect(Faker.Internet.ipV6Address()).toMatch(/^$/);
       });
     });
     return describe("#slug", function() {
@@ -402,21 +426,21 @@ describe("Faker", function() {
     });
   });
   describe("Faker.PhoneNumber", function() {
-    describe("#phone_number", function() {
+    describe("#phoneNumber", function() {
       return it("returns a value with valid separators and integers", function() {
-        return expect(Faker.PhoneNumber.phone_number()).toMatch(/^[^0][^2-9]1?[0-9\-\(\)\.]+((ext\.|x)?\s?[0-9]+)?$/);
+        return expect(Faker.PhoneNumber.phoneNumber()).toMatch(/^[^0][^2-9]1?[0-9\-\(\)\.]+((ext\.|x)?\s?[0-9]+)?$/);
       });
     });
-    return describe("#toll_free", function() {
+    return describe("#tollFree", function() {
       beforeEach(function() {
-        return spyOn(Faker.PhoneNumber, 'phone_number');
+        return spyOn(Faker.PhoneNumber, 'phoneNumber');
       });
-      it("should call phone_number", function() {
-        Faker.PhoneNumber.toll_free();
-        return expect(Faker.PhoneNumber.phone_number).toHaveBeenCalled();
+      it("should call phoneNumber", function() {
+        Faker.PhoneNumber.tollFree();
+        return expect(Faker.PhoneNumber.phoneNumber).toHaveBeenCalled();
       });
       return it("returns a number with the area code 800/866/855", function() {
-        return expect(Faker.PhoneNumber.toll_free()).toMatch(/(?:800|888|866|855|877)/);
+        return expect(Faker.PhoneNumber.tollFree()).toMatch(/(?:800|888|866|855|877)/);
       });
     });
   });
@@ -467,8 +491,8 @@ describe("Faker", function() {
       beforeEach(function() {
         return Faker.Locales.en = {
           name: {
-            first_name: ["Aaliyah"],
-            last_name: ["Abbott"]
+            firstName: ["Aaliyah"],
+            lastName: ["Abbott"]
           },
           company: {
             suffix: ["Inc"]
@@ -477,12 +501,12 @@ describe("Faker", function() {
       });
       return it("returns a string with the proper injections", function() {
         var exp, str;
-        str = '#{name.first_name} - #{name.last_name} - #{company.suffix}';
+        str = '#{name.firstName} - #{name.lastName} - #{company.suffix}';
         exp = "Aaliyah - Abbott - Inc";
         return expect(Faker.Util.interpret(str)).toEqual(exp);
       });
     });
-    describe("#fix_umlauts", function() {
+    describe("#fixUmlauts", function() {
       var umlauts;
       umlauts = {
         "ä": 'ae',
@@ -491,30 +515,30 @@ describe("Faker", function() {
         "ß": 'ss'
       };
       it("should fix ä", function() {
-        return expect(Faker.Util.fix_umlauts('häppy')).toEqual('haeppy');
+        return expect(Faker.Util.fixUmlauts('häppy')).toEqual('haeppy');
       });
       it("should fix ö", function() {
-        return expect(Faker.Util.fix_umlauts('höppy')).toEqual('hoeppy');
+        return expect(Faker.Util.fixUmlauts('höppy')).toEqual('hoeppy');
       });
       it("should fix ü", function() {
-        return expect(Faker.Util.fix_umlauts('hüppy')).toEqual('hueppy');
+        return expect(Faker.Util.fixUmlauts('hüppy')).toEqual('hueppy');
       });
       return it("should fix ß", function() {
-        return expect(Faker.Util.fix_umlauts('hßppy')).toEqual('hssppy');
+        return expect(Faker.Util.fixUmlauts('hßppy')).toEqual('hssppy');
       });
     });
-    return describe("#fix_non_word_chars", function() {
+    return describe("#fixNonWordChars", function() {
       it("should convert apostrophies", function() {
-        return expect(Faker.Util.fix_non_word_chars("o'reilly")).toEqual('oreilly');
+        return expect(Faker.Util.fixNonWordChars("o'reilly")).toEqual('oreilly');
       });
       it("should convert commas", function() {
-        return expect(Faker.Util.fix_non_word_chars("o,reilly")).toEqual('oreilly');
+        return expect(Faker.Util.fixNonWordChars("o,reilly")).toEqual('oreilly');
       });
       it("should convert spaces", function() {
-        return expect(Faker.Util.fix_non_word_chars("o reilly")).toEqual('oreilly');
+        return expect(Faker.Util.fixNonWordChars("o reilly")).toEqual('oreilly');
       });
       return it("should convert random non-word characters", function() {
-        return expect(Faker.Util.fix_non_word_chars("o*%^$^%$reilly")).toEqual('oreilly');
+        return expect(Faker.Util.fixNonWordChars("o*%^$^%$reilly")).toEqual('oreilly');
       });
     });
   });
@@ -631,11 +655,11 @@ describe("Faker", function() {
       beforeEach(function() {
         spyOn($, 'extend').andCallThrough();
         return Faker.TestExtension = Faker.extend({
-          custom_method: $.noop
+          customMethod: $.noop
         });
       });
       it("should have the newly added extension methods", function() {
-        return expect(Faker.TestExtension.custom_method).toBeDefined();
+        return expect(Faker.TestExtension.customMethod).toBeDefined();
       });
       it("should extend Faker.Extension.Base", function() {
         return expect($.extend).toHaveBeenCalled();

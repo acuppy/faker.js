@@ -19,8 +19,7 @@ describe "Faker", ->
 
   describe "#configure", ->
     beforeEach  ->
-      Faker.configure
-        locale: 'es'
+      Faker.configure locale: 'es'
 
     afterEach ->
       Faker.configure({})
@@ -30,7 +29,7 @@ describe "Faker", ->
 
   describe "#reset", ->
     beforeEach  ->
-      Faker.configure({ locale: 'es' })
+      Faker.configure locale: 'es'
       Faker.reset()
 
     it "should updated the Faker.config hash", ->
@@ -174,26 +173,26 @@ describe "Faker", ->
 
       beforeEach  ->
         spyOn(Faker.Util.Random, 'bool').andReturn(true)
-        parts = Faker.Name.full_name().split ' '
+        parts = Faker.Name.fullName().split ' '
         name  = Faker.Locales.en.name
 
       it "returns a fullname", ->
         expect( $.inArray(parts[0], name.prefix ) ).toBeTruthy()
-        expect( $.inArray(parts[1], name.first_name ) ).toBeTruthy()
-        expect( $.inArray(parts[2], name.last_name ) ).toBeTruthy()
+        expect( $.inArray(parts[1], name.firstName ) ).toBeTruthy()
+        expect( $.inArray(parts[2], name.lastName ) ).toBeTruthy()
         expect( $.inArray(parts[3], name.suffix ) ).toBeTruthy()
 
     describe "#prefix", ->
       it "returns a prefix", ->
         expect( $.inArray(Faker.Name.prefix(), Faker.Locales.en.name.prefix)).toBeTruthy()
 
-    describe "#first_name", ->
+    describe "#firstName", ->
       it "returns a first name", ->
-        expect( $.inArray(Faker.Name.first_name(), Faker.Locales.en.name.first_name)).toBeTruthy()
+        expect( $.inArray(Faker.Name.firstName(), Faker.Locales.en.name.firstName)).toBeTruthy()
 
-    describe "#last_name", ->
+    describe "#lastName", ->
       it "returns a last name", ->
-        expect( $.inArray(Faker.Name.last_name(), Faker.Locales.en.name.last_name)).toBeTruthy()
+        expect( $.inArray(Faker.Name.lastName(), Faker.Locales.en.name.lastName)).toBeTruthy()
 
     describe "#suffix", ->
       it "returns a suffix", ->
@@ -228,12 +227,12 @@ describe "Faker", ->
       it "returns a suffix", ->
         expect(Faker.Company.suffix()).toMatch(/^(?:[a-zA-Z]+\s?)+$/)
 
-    describe "#catch_phrase", ->
+    describe "#catchPhrase", ->
       it "returns a string", ->
-        expect($.type(Faker.Company.catch_phrase())).toEqual('string')
+        expect($.type(Faker.Company.catchPhrase())).toEqual('string')
 
       it "returns a sentence of values", ->
-        expect(Faker.Company.catch_phrase()).toMatch(/^(?:[a-zA-Z0-9\-\/,']+\s?)+$/)
+        expect(Faker.Company.catchPhrase()).toMatch(/^(?:[a-zA-Z0-9\-\/,']+\s?)+$/)
 
     describe "#bs", ->
       it "returns a string", ->
@@ -248,97 +247,97 @@ describe "Faker", ->
 
     describe "#email", ->
       beforeEach ->
-        spyOn(Faker.Internet, 'user_name').andCallThrough()
-        spyOn(Faker.Internet, 'domain_name').andCallThrough()
+        spyOn(Faker.Internet, 'userName').andCallThrough()
+        spyOn(Faker.Internet, 'domainName').andCallThrough()
 
       it "returns an email address from a username and domain", ->
         expect(Faker.Internet.email()).toMatch(/\w+\@[a-zA-Z]+\.[a-z]{2,}/)
 
-      it "expects to have used Faker.Internet.user_name", ->
+      it "expects to have used Faker.Internet.userName", ->
         Faker.Internet.email()
-        expect(Faker.Internet.user_name).toHaveBeenCalled();
+        expect(Faker.Internet.userName).toHaveBeenCalled();
 
-      it "expects to have used Faker.Internet.domain_name", ->
+      it "expects to have used Faker.Internet.domainName", ->
         Faker.Internet.email()
-        expect(Faker.Internet.domain_name).toHaveBeenCalled();
+        expect(Faker.Internet.domainName).toHaveBeenCalled();
 
-    describe "#free_email", ->
+    describe "#freeEmail", ->
       beforeEach ->
-        spyOn(Faker.Internet, 'user_name').andCallThrough()
+        spyOn(Faker.Internet, 'userName').andCallThrough()
 
       it "returns an email address for a popular free email provider", ->
-        expect(Faker.Internet.free_email()).toMatch(/\w+\@(?:gmail|yahoo|hotmail)\.com/)
+        expect(Faker.Internet.freeEmail()).toMatch(/\w+\@(?:gmail|yahoo|hotmail)\.com/)
 
-      it "expects to have used Faker.Internet.user_name", ->
-        Faker.Internet.free_email()
-        expect(Faker.Internet.user_name).toHaveBeenCalled();
+      it "expects to have used Faker.Internet.userName", ->
+        Faker.Internet.freeEmail()
+        expect(Faker.Internet.userName).toHaveBeenCalled();
 
-    describe "#safe_email", ->
+    describe "#safeEmail", ->
       beforeEach ->
-        spyOn(Faker.Internet, 'user_name').andCallThrough()
+        spyOn(Faker.Internet, 'userName').andCallThrough()
 
       it "returns an email address using example as the domain", ->
-        expect(Faker.Internet.safe_email()).toMatch(/\w+\@example\.(?:com|net|org)/)
+        expect(Faker.Internet.safeEmail()).toMatch(/\w+\@example\.(?:com|net|org)/)
 
-      it "expects to have used Faker.Internet.user_name", ->
-        Faker.Internet.safe_email()
-        expect(Faker.Internet.user_name).toHaveBeenCalled();
+      it "expects to have used Faker.Internet.userName", ->
+        Faker.Internet.safeEmail()
+        expect(Faker.Internet.userName).toHaveBeenCalled();
 
-    describe "#user_name", ->
+    describe "#userName", ->
       beforeEach ->
-        spyOn(Faker.Name, 'first_name').andCallThrough()
-        spyOn(Faker.Util, 'fix_umlauts').andCallThrough()
+        spyOn(Faker.Name, 'firstName').andCallThrough()
+        spyOn(Faker.Util, 'fixUmlauts').andCallThrough()
 
-      it "expects to have used Faker.Name.first_name", ->
-        Faker.Internet.user_name()
-        expect(Faker.Name.first_name).toHaveBeenCalled()
+      it "expects to have used Faker.Name.firstName", ->
+        Faker.Internet.userName()
+        expect(Faker.Name.firstName).toHaveBeenCalled()
 
       it "expects to have fixed umlauts", ->
-        Faker.Internet.user_name()
-        expect(Faker.Util.fix_umlauts).toHaveBeenCalled()
+        Faker.Internet.userName()
+        expect(Faker.Util.fixUmlauts).toHaveBeenCalled()
 
       it "returns a string without whitespace characters", ->
-        expect(Faker.Internet.user_name()).not.toMatch(/\W/gi)
+        expect(Faker.Internet.userName()).not.toMatch(/\W/gi)
 
-    describe "#domain_name", ->
+    describe "#domainName", ->
       beforeEach ->
-        spyOn(Faker.Internet, 'domain_word').andCallThrough()
-        spyOn(Faker.Util, 'fix_umlauts').andCallThrough()
+        spyOn(Faker.Internet, 'domainWord').andCallThrough()
+        spyOn(Faker.Util, 'fixUmlauts').andCallThrough()
 
       it "returns a string with a TLD", ->
-        expect(Faker.Internet.domain_name()).toMatch(/\w+\.[a-z]{2,}/)
+        expect(Faker.Internet.domainName()).toMatch(/\w+\.[a-z]{2,}/)
 
       it "expects to have fixed umlauts", ->
-        Faker.Internet.domain_name()
-        expect(Faker.Util.fix_umlauts).toHaveBeenCalled()
+        Faker.Internet.domainName()
+        expect(Faker.Util.fixUmlauts).toHaveBeenCalled()
 
-      it "expects to have domain_word called", ->
-        Faker.Internet.domain_name()
-        expect(Faker.Internet.domain_word).toHaveBeenCalled()
+      it "expects to have domainWord called", ->
+        Faker.Internet.domainName()
+        expect(Faker.Internet.domainWord).toHaveBeenCalled()
 
-    describe "#domain_word", ->
+    describe "#domainWord", ->
       beforeEach ->
         spyOn(Faker.Company, 'name').andCallThrough()
 
       it "returns a string", ->
-        expect(Faker.Internet.domain_word()).not.toMatch(/\W/gi)
+        expect(Faker.Internet.domainWord()).not.toMatch(/\W/gi)
 
       it "expects to have called Faker.Company.name", ->
         Faker.Company.name()
         expect(Faker.Company.name).toHaveBeenCalled()
 
-    describe "#domain_suffix", ->
+    describe "#domainSuffix", ->
       it "returns a TLD", ->
-        expect( $.inArray(Faker.Internet.domain_suffix(), ["com", "biz", "info", "name", "net", "org"])).toBeTruthy()
+        expect( $.inArray(Faker.Internet.domainSuffix(), ["com", "biz", "info", "name", "net", "org"])).toBeTruthy()
 
-    describe "#ip_v4_address", ->
+    describe "#ipV4Address", ->
       it "returns a valid formatted ipv4 address", ->
-        expect( Faker.Internet.ip_v4_address() ).toMatch(/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/)
+        expect( Faker.Internet.ipV4Address() ).toMatch(/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/)
 
-    describe "#ip_v6_address", ->
+    describe "#ipV6Address", ->
       it "returns a valid formatted ipv6 address", ->
         pending()
-        expect( Faker.Internet.ip_v6_address() ).toMatch(/^$/)
+        expect( Faker.Internet.ipV6Address() ).toMatch(/^$/)
 
     describe "#slug", ->
       it "returns a string separated", ->
@@ -352,20 +351,20 @@ describe "Faker", ->
           expect(Faker.Internet.slug('happy birthday', ':')).toMatch(/^happy:birthday$/)
 
   describe "Faker.PhoneNumber", ->
-    describe "#phone_number", ->
+    describe "#phoneNumber", ->
       it "returns a value with valid separators and integers", ->
-        expect(Faker.PhoneNumber.phone_number()).toMatch(/^[^0][^2-9]1?[0-9\-\(\)\.]+((ext\.|x)?\s?[0-9]+)?$/)
+        expect(Faker.PhoneNumber.phoneNumber()).toMatch(/^[^0][^2-9]1?[0-9\-\(\)\.]+((ext\.|x)?\s?[0-9]+)?$/)
 
-    describe "#toll_free", ->
+    describe "#tollFree", ->
       beforeEach ->
-        spyOn(Faker.PhoneNumber, 'phone_number')
+        spyOn(Faker.PhoneNumber, 'phoneNumber')
 
-      it "should call phone_number", ->
-        Faker.PhoneNumber.toll_free()
-        expect(Faker.PhoneNumber.phone_number).toHaveBeenCalled()
+      it "should call phoneNumber", ->
+        Faker.PhoneNumber.tollFree()
+        expect(Faker.PhoneNumber.phoneNumber).toHaveBeenCalled()
 
       it "returns a number with the area code 800/866/855", ->
-        expect(Faker.PhoneNumber.toll_free()).toMatch(/(?:800|888|866|855|877)/)
+       expect(Faker.PhoneNumber.tollFree()).toMatch(/(?:800|888|866|855|877)/)
 
   describe "Faker.Util", ->
     describe "Random", ->
@@ -406,17 +405,17 @@ describe "Faker", ->
       beforeEach  ->
         Faker.Locales.en =
           name:
-            first_name: ["Aaliyah"]
-            last_name:  ["Abbott"]
+            firstName: ["Aaliyah"]
+            lastName:  ["Abbott"]
           company:
             suffix: ["Inc"]
 
       it "returns a string with the proper injections", ->
-        str = '#{name.first_name} - #{name.last_name} - #{company.suffix}'
+        str = '#{name.firstName} - #{name.lastName} - #{company.suffix}'
         exp = "Aaliyah - Abbott - Inc"
         expect(Faker.Util.interpret(str)).toEqual(exp)
 
-    describe "#fix_umlauts", ->
+    describe "#fixUmlauts", ->
       umlauts =
         "ä": 'ae'
         "ö": 'oe'
@@ -424,29 +423,29 @@ describe "Faker", ->
         "ß": 'ss'
 
       it "should fix ä", ->
-        expect(Faker.Util.fix_umlauts('häppy')).toEqual('haeppy')
+        expect(Faker.Util.fixUmlauts('häppy')).toEqual('haeppy')
 
       it "should fix ö", ->
-        expect(Faker.Util.fix_umlauts('höppy')).toEqual('hoeppy')
+        expect(Faker.Util.fixUmlauts('höppy')).toEqual('hoeppy')
 
       it "should fix ü", ->
-        expect(Faker.Util.fix_umlauts('hüppy')).toEqual('hueppy')
+        expect(Faker.Util.fixUmlauts('hüppy')).toEqual('hueppy')
 
       it "should fix ß", ->
-        expect(Faker.Util.fix_umlauts('hßppy')).toEqual('hssppy')
+        expect(Faker.Util.fixUmlauts('hßppy')).toEqual('hssppy')
 
-    describe "#fix_non_word_chars", ->
+    describe "#fixNonWordChars", ->
       it "should convert apostrophies", ->
-        expect(Faker.Util.fix_non_word_chars("o'reilly")).toEqual('oreilly')
+        expect(Faker.Util.fixNonWordChars("o'reilly")).toEqual('oreilly')
 
       it "should convert commas", ->
-        expect(Faker.Util.fix_non_word_chars("o,reilly")).toEqual('oreilly')
+        expect(Faker.Util.fixNonWordChars("o,reilly")).toEqual('oreilly')
 
       it "should convert spaces", ->
-        expect(Faker.Util.fix_non_word_chars("o reilly")).toEqual('oreilly')
+        expect(Faker.Util.fixNonWordChars("o reilly")).toEqual('oreilly')
 
       it "should convert random non-word characters", ->
-        expect(Faker.Util.fix_non_word_chars("o*%^$^%$reilly")).toEqual('oreilly')
+        expect(Faker.Util.fixNonWordChars("o*%^$^%$reilly")).toEqual('oreilly')
 
   describe "Faker.Util.Numbers", ->
     describe "#range", ->
@@ -546,10 +545,10 @@ describe "Faker", ->
         spyOn($, 'extend').andCallThrough()
 
         Faker.TestExtension = Faker.extend
-          custom_method: $.noop
+          customMethod: $.noop
 
       it "should have the newly added extension methods", ->
-        expect(Faker.TestExtension.custom_method).toBeDefined()
+        expect(Faker.TestExtension.customMethod).toBeDefined()
 
       it "should extend Faker.Extension.Base", ->
         expect($.extend).toHaveBeenCalled()
